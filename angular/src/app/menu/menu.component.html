@@ -1,0 +1,47 @@
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>create</mat-icon>
+    <span>National championship</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>create</mat-icon>
+    <span>Race</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>create</mat-icon>
+    <span>Team season</span>
+  </button>
+ <button mat-menu-item>
+    <mat-icon>create</mat-icon>
+     <a routerLink="create_rider" role="button" routerLinkActive="active">Rider</a>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>import_export</mat-icon>
+    <span>
+       <a routerLink="import_classification" role="button" routerLinkActive="active">Race results</a>
+    </span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>import_export</mat-icon>
+    <span>Start list</span>
+  </button>
+    <button mat-menu-item>
+    <mat-icon>import_export</mat-icon>
+    <span>UCI ranking</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>import_export</mat-icon>
+    <span>UCI calendar</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>sort</mat-icon>
+    <span>Sort by date</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>sort</mat-icon>
+    <span>Sort by name</span>
+  </button>
+</mat-menu>

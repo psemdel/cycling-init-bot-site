@@ -1,0 +1,39 @@
+<h1>My request</h1>
+<div *ngIf="(create_rider_botrequests | async)?.length!=0">
+    <h2>Create rider requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of create_rider_botrequests  | async">
+            <td>{{botrequest.name}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='deleteCreateRider(botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(import_classification_botrequests | async)?.length!=0">
+    <h2>Import classification requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Item</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of import_classification_botrequests | async">
+            <td>{{botrequest.item_id}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='deleteImportClassification(botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>

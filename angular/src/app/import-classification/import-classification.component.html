@@ -1,0 +1,48 @@
+<div style="width: 600px;">
+    <h3>Import race results</h3>
+    <div style="width: 400px;">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <label for=" item_id">Id of the race item on wikidata<br/>
+                  <small>for instance Q30091668 for Tour de France 2019</small>
+                  </label>
+              
+                  <input type="text" class="form-control" id="item_id" formControlName="item_id"
+                       [ngClass]="{ 'is-invalid': submitted && f.item_id.errors }" />
+                     <div *ngIf="submitted && f.item_id.errors" class="invalid-feedback">
+                         <div *ngIf="f.item_id.errors.required">Field required</div>
+                         <div *ngIf="f.item_id.errors.pattern">Item id should start with "Q"</div>
+                    </div>
+                </div>
+            <br/>
+                <div class="form-group">
+                   <label for="gender">Type of classification</label>
+                   <select class="form-control" formControlName="classificationtype"
+                      [ngClass]="{ 'is-invalid': submitted && f.classificationtype.errors }">
+                      <option *ngFor="let classificationtype of classificationtypes" [value]="classificationtype.value">
+                        {{classificationtype.viewValue}}
+                      </option>
+                    </select>
+                     <div *ngIf="submitted && f.classificationtype.errors" class="invalid-feedback">
+                         <div *ngIf="f.classificationtype.errors.required">Field required</div>
+                    </div>
+                </div>
+            <br>
+
+           <label>Excel or csv file from UCI web site</label>
+           <input type="file" id="fileUpload" name="fileUpload" formControlName="file"  multiple="multiple" 
+              accept=".xlsx, .csv" />
+            <br>
+            <li *ngFor="let file of files" [@fadeInOut]="file.state">
+                <mat-progress-bar [value]="file.progress"></mat-progress-bar>
+            </li>
+            <div *ngIf="submitted && sizeerror" class="invalid-feedback">Maximum size exceeded</div>
+            <div *ngIf="submitted && exterror" class="invalid-feedback">Wrong file type</div>
+            <br>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+          </form>
+    </div>
+    <div *ngIf="success">
+          <h4>You submitted successfully {{lastname}}!</h4>
+    </div>
+</div>

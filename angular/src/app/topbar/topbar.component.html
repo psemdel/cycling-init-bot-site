@@ -1,0 +1,21 @@
+<div class="fixedheader">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+          <app-menu></app-menu>
+          <div class="column middle">
+           <a mat-button routerLink="home" role="button" routerLinkActive="active"><h1>Cycling Init Bot</h1></a>
+          </div>
+          
+         <div *ngIf="!currentUser">
+              <a mat-raised-button color="primary" routerLink="login" role="button" routerLinkActive="active">
+                  login</a>
+              <a mat-raised-button color="primary" routerLink="register" role="button" routerLinkActive="active">
+                  register</a>
+         </div>
+        
+         <div *ngIf="currentUser">
+             <app-menu-pers></app-menu-pers>
+         </div>
+     </mat-toolbar-row>
+  </mat-toolbar>
+</div>

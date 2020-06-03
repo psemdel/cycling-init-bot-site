@@ -1,0 +1,9 @@
+django
+djangorestframework
+gunicorn
+django-heroku
+djangorestframework_simplejwt
+djoser
+whitenoise
+xlrd
+

@@ -1,0 +1,52 @@
+<h1>Requests</h1>
+<div *ngIf="(create_rider_botrequests | async)?.length!=0">
+    <h2>Create Rider Requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+           <th>Author</th><th>Status</th><th>Name</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of create_rider_botrequests| async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>{{botrequest.name}}</td>
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+              <button mat-raised-button color="warn" type="button" (click)='deleteCreateRider(botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div *ngIf="(import_classification_botrequests | async)?.length!=0">
+<h2>Import Classification Requests</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Author</th><th>Status</th><th>Item</th><th colspan="2">Actions</th>
+    </tr>
+    </thead>
+    <tr *ngFor="let botrequest of import_classification_botrequests| async">
+        <td>{{botrequest.author_name}}</td>
+        <td>{{botrequest.status}}</td>
+        <td>{{botrequest.item_id}}</td>
+        <td>
+          <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+             <mat-icon>play_arrow</mat-icon>
+          </button>
+        </td>
+        <td>
+          <button mat-raised-button color="warn" type="button" (click)='deleteImportClassification(botrequest)'>
+            <mat-icon>clear</mat-icon>
+          </button>
+        </td>
+    </tr>
+</table>
+</div>
