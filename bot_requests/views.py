@@ -27,7 +27,6 @@ import json
 
 RATELIMRQ='200000/h'
 
-#@csrf_exempt   
 def index(request):
    return HttpResponse("<p>bot_requests index</p>")
 
@@ -35,7 +34,6 @@ class DetailView(generic.DetailView):
     model = BotRequest
     template_name = 'bot_requests/detail.html'
   
-#@csrf_exempt
 @api_view(['DELETE'])       
 def create_rider_request_delete(request, pk):
     try:
@@ -51,7 +49,6 @@ def create_rider_request_delete(request, pk):
         print("plantage")
         return JsonResponse({"delete":"failed"},status=status.HTTP_400_BAD_REQUEST)
 
-#@csrf_exempt
 @api_view(['DELETE'])       
 def import_classification_request_delete(request, pk):
     try:
@@ -67,7 +64,6 @@ def import_classification_request_delete(request, pk):
         print("plantage")
         return JsonResponse({"delete":"failed"},status=status.HTTP_400_BAD_REQUEST)
 
-#@csrf_exempt
 @api_view(['GET'])    
 def create_rider_request_list(request, userid):
     if request.method == 'GET':
@@ -77,7 +73,6 @@ def create_rider_request_list(request, userid):
     else:
         return JsonResponse({'error':'no GET request'}, status=status.HTTP_400_BAD_REQUEST)   
 
-#@csrf_exempt
 @api_view(['GET'])    
 def import_classification_request_list(request, userid):
     if request.method == 'GET':
@@ -87,7 +82,6 @@ def import_classification_request_list(request, userid):
     else:
         return JsonResponse({'error':'no GET request'}, status=status.HTTP_400_BAD_REQUEST)   
 
-#@csrf_exempt
 @api_view(['GET'])    
 @permission_classes((IsAdminUser,))
 def all_create_rider_request_list(request, userid):
@@ -98,7 +92,6 @@ def all_create_rider_request_list(request, userid):
     else:
         return JsonResponse({'error':'no GET request'}, status=status.HTTP_400_BAD_REQUEST)   
 
-#@csrf_exempt
 @api_view(['GET'])   
 @permission_classes((IsAdminUser,)) 
 def all_import_classification_request_list(request, userid):
@@ -112,7 +105,6 @@ def all_import_classification_request_list(request, userid):
 
 ##### POST RQ #####
 @ratelimit(key='ip', rate=RATELIMRQ)
-#@csrf_exempt
 @api_view(['POST'])    
 def create_rider_request(request):
     if request.method == 'POST':
@@ -131,7 +123,6 @@ def create_rider_request(request):
             return JsonResponse(request_serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
 
 @ratelimit(key='ip', rate=RATELIMRQ)
-#@csrf_exempt
 @api_view(['POST','GET'])    
 def import_classification_request(request):
     if request.method == 'POST':
@@ -169,7 +160,6 @@ def import_classification_request(request):
             
             return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
  
-#@csrf_exempt    
 @api_view(['POST'])    
 @permission_classes((IsAdminUser,))
 def run(request):

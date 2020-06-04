@@ -6,4 +6,5 @@ djangorestframework_simplejwt
 djoser
 whitenoise
 xlrd
+ratelimit
 

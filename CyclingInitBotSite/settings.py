@@ -87,13 +87,15 @@ else:
         'djoser',
         'bot_requests.apps.BotRequestsConfig',
         'users.apps.UsersConfig',
+        # CORS
+        'corsheaders', 
     ]  
 
 MIDDLEWARE = [
     # CORS
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',  
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
