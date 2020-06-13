@@ -5,9 +5,8 @@ Created on Wed Apr  1 09:37:08 2020
 
 @author: maxime
 """
-from django.http import HttpResponse
+#django
 from django.shortcuts import render
-from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 
 # Create your views here.

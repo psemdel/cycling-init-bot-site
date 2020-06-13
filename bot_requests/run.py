@@ -9,7 +9,7 @@ import pywikibot #avoid confusion
 from bot_requests.Bot import nation_team_table
 import time
 
-from .models import CreateRiderRequest
+from .models import CreateRiderRequest, ImportClassificationRequest
 
 site = pywikibot.Site("wikidata", "wikidata")
 repo = site.data_repository()
@@ -18,10 +18,16 @@ repo = site.data_repository()
 def load_request(request_id, request_routine):
     if request_routine=="create_rider":
         rq =CreateRiderRequest.objects.get(pk=request_id)
-        rq.status = "started"
-        rq.save()
-        return rq
+        return sub_load(rq)
+    elif request_routine=="import_classification":
+        rq =ImportClassificationRequest.objects.get(pk=request_id)
+        return sub_load(rq)
     
+def sub_load(rq):
+    rq.status = "started"
+    rq.save()
+    return rq 
+        
 def run_bot(request_id, request_routine):
     #code 10: already there
     #code 11: general crash
@@ -37,7 +43,7 @@ def run_bot(request_id, request_routine):
             name=rq.name
             countryCIO=rq.nationality 
             gender=rq.gender
-            if True:
+            if False:
                 rider_fast_init.f(pywikibot,site,repo,time,nation_table, name,countryCIO)
             rq.status = "completed"
             rq.save() 
@@ -51,8 +57,10 @@ def run_bot(request_id, request_routine):
              startliston=True
              test=False
              file=rq.result_file_name
-             classification_importer.f(pywikibot,site,repo,stage_or_general,id_race,final,
-                               maxkk,test,startliston=startliston,file=file)
+             if False:
+                 classification_importer.f(pywikibot,site,repo,stage_or_general,id_race,final,
+                                   maxkk,test,startliston=startliston,file=file)
+             return 0
         else:
             print("routine not managed")
     except Exception as msg:

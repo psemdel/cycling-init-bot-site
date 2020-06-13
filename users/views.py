@@ -1,18 +1,17 @@
+#Django
 from django.contrib.auth import logout
 from django.http.response import JsonResponse
 
+#Rest
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 
+#app
 from .serializers import UserProfileSerializer,CustomTokenObtainPairSerializer
 from .models import UserProfile
-
-from rest_framework_simplejwt.views import TokenObtainPairView
-from djoser.conf import django_settings
-from django.urls import reverse
-import requests
 
 #adapt jwt sending
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -40,15 +39,3 @@ def mylogout(request):
             return JsonResponse({'log out':'failure'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return JsonResponse({'log out':'failure'}, status=status.HTTP_400_BAD_REQUEST)
-    
-@api_view(['GET'])      
-def ActivateUserByGet(request, uid, token):
-    if request.method == 'GET': 
-        payload = {'uid': uid, 'token': token}
-        url = '{0}://{1}{2}'.format(django_settings.PROTOCOL, django_settings.DOMAIN, reverse('user-activate'))
-        response = requests.post(url, data = payload)
-
-        if response.status_code == 204:
-            return JsonResponse({'detail': 'all good sir'}, status=status.HTTP_202_ACCEPTED)
-        else:
-            return JsonResponse({'error':'error'}, status=status.HTTP_400_BAD_REQUEST)

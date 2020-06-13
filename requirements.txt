@@ -6,6 +6,6 @@ djangorestframework_simplejwt
 djoser
 whitenoise
 xlrd
-ratelimit
+django-ratelimit
 django-cors-headers
 

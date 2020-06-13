@@ -5,8 +5,10 @@ Created on Mon Mar 30 17:40:03 2020
 
 @author: maxime
 """
-
+#rest
 from rest_framework import serializers 
+
+#app
 from bot_requests.models import BotRequest, CreateRiderRequest, ImportClassificationRequest
 
 class BotRequestSerializer(serializers.ModelSerializer):

@@ -5,14 +5,20 @@ Created on Mon Apr 27 21:24:48 2020
 
 @author: maxime
 """
-
-from rest_framework import serializers 
-from .models import UserProfile
+#django
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User, Group
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
 from django.dispatch import receiver
+
+#rest
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework import serializers 
+
+#other
+from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
+
+#app
+from .models import UserProfile
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
