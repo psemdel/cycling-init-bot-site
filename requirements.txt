@@ -9,7 +9,6 @@ whitenoise
 xlrd
 django-ratelimit
 django-cors-headers
-requests
 
 ####pywikibot
 
