@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:8000/api/',
-  authUrl: 'http://localhost:8000/auth/'
+  apiUrl: 'https://cycling-init-bot-site.herokuapp.com/api/',
+  authUrl: 'https://cycling-init-bot-site.herokuapp.com/auth/'
 };

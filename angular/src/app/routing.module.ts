@@ -20,13 +20,14 @@ const routes: Routes = [
     { path: 'home', component: HomeComponent},
 
     { path: 'create_rider', component: CreateRiderComponent, canActivate: [AuthGuard] },
+    { path: 'import_classification', component: ImportClassificationComponent, canActivate: [AuthGuardStaff] },
     { path: 'request_list', component: RequestListComponent, canActivate: [AuthGuard] },
     { path: 'all_request_list', component: AllRequestListComponent, canActivate: [AuthGuardStaff] },
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'import_classification', component: ImportClassificationComponent},
+   
     { path: 'activate/:uid/:token', component: ConfirmEmailComponent },
-  //  { path: 'activate', component: ConfirmEmailComponent },
+   // { path: 'activate', component: ConfirmEmailComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
