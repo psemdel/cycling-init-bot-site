@@ -8,7 +8,6 @@ Created on Tue Dec 17 23:05:33 2019
 #from  import cycling_init_bot_low
 #from Bot import cycling_init_bot_low
 from .cycling_init_bot_low import *
-#from cycling_init_bot_low import *
 
 def f(
         pywikibot,

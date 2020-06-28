@@ -5,7 +5,7 @@ Created on Sun Jul 22 16:21:08 2018
 @author: maxime delzenne
 """
 
-from cycling_init_bot_low import * 
+from .cycling_init_bot_low import *
 
 def f(pywikibot,site,repo,general_or_stage, id_race,
                            final, maxkk,test,**kwargs):

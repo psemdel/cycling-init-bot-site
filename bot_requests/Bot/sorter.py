@@ -9,7 +9,7 @@ from moo import *
 
 
 #sort the victories by date
-def date_sorter(pywikibot, site, repo, time, team_id, victory,test):
+def date_sorter(pywikibot, site, repo, time, team_id, property_number,test):
  
     #return the victories sorted by date
     def date_sort(list_of_victories, new_order):
@@ -38,10 +38,10 @@ def date_sorter(pywikibot, site, repo, time, team_id, victory,test):
     
     list_of_races = []
 
-    if victory:
-        property_number = 2522  # victoire
-    else:
-        property_number = 527  # comprend
+   # if victory:
+  #      property_number = 2522  # victoire
+   # else:
+  #      property_number = 527  # comprend
 
     if(u'P' + str(property_number) in item.claims):
         list_of_comprend = item.claims.get(u'P' + str(property_number))
@@ -103,17 +103,17 @@ def date_sorter(pywikibot, site, repo, time, team_id, victory,test):
                     1)
 
 #sort the family name of cyclists
-def name_sorter(pywikibot, site, repo, time, team_id, team, champ, test):
+def name_sorter(pywikibot, site, repo, time, team_id, property_number, test):
     item = pywikibot.ItemPage(repo, team_id)
     item.get()
 
     list_of_objects = []
     list_of_names = []
 
-    if team or champ:
-        property_number = 527  # comprend
-    else:
-        property_number = 1923  # liste des équipes participantes
+  #  if team or champ:
+  #      property_number = 527  # comprend
+ #   else:
+ #       property_number = 1923  # liste des équipes participantes
 
     # Read the list of racers and correct their name
     if(u'P' + str(property_number) in item.claims):
@@ -140,10 +140,10 @@ def name_sorter(pywikibot, site, repo, time, team_id, team, champ, test):
     print(sorted_names)
     order_ok=True
     
-    if team:
-        list_of_qualifiers=['P580','P582']
-    else:
-        list_of_qualifiers=[]
+    #if team:
+    list_of_qualifiers=['P580','P582']
+    #else:
+    #    list_of_qualifiers=[]
         
     saved_qualifiers={}
     # delete done later
