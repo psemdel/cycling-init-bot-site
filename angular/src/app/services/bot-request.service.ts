@@ -12,41 +12,24 @@ export class BotRequestService {
 
   constructor(private http: HttpClient) { }
 
-   createRiderRequest(botrequest: Object): Observable<Object> {
-    return this.http.post(`${this.baseUrl}/create_rider/`, botrequest);
+  createRq(routine: string, botrequest: Object): Observable<Object> {
+    return this.http.post(`${this.baseUrl}/create/${routine}/`, botrequest);
+  } 
+  
+  deleteRq(routine: string, rq_id: number): Observable<Object> {
+    return this.http.delete(`${this.baseUrl}/delete/${routine}/${rq_id}`);
   }
   
-   deleteCreateRiderRequest(id: number): Observable<Object> {
-    return this.http.delete(`${this.baseUrl}/create_rider/delete/${id}`);
-  }
-  
-   getCreateRiderRequests(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/create_rider/${id}`); 
-  } //user id
- 
-   getAllCreateRiderRequests(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/create_rider/all/${id}`); 
+  getAllRq(routine: string, author_id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/all/${routine}/${author_id}`); 
   } //user id 
   
-  //post is with file  
-  deleteImportClassificationRequest(id: number): Observable<Object> {
-    return this.http.delete(`${this.baseUrl}/import_classification/delete/${id}`);
-  }
-  
-  getImportClassificationRequests(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/import_classification/${id}`); 
-  } //user id
-  
-  getAllImportClassificationRequests(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/import_classification/all/${id}`); 
-  } //user id  
+  getRq(routine: string, author_id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get/${routine}/${author_id}`); 
+  } //user id   
 
-
-
-  runRequest(botrequest: Object): Observable<Object> {
+  runRq(botrequest: Object): Observable<Object> {
     return this.http.post(`${this.baseUrl}/run/`, botrequest);
   }
-  
-
 
 }

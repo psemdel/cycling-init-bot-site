@@ -9,6 +9,7 @@ Created on Mon Mar 30 17:39:43 2020
 #from django.conf.urls import url 
 from bot_requests import views 
 from django.urls import path
+from .models import *
 
 app_name = 'botrequests'
 
@@ -17,12 +18,9 @@ urlpatterns = [
    #Consult for the back office
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('run/', views.run, name='run'),
-    path('create_rider/', views.create_rider_request),
-    path('create_rider/delete/<int:pk>', views.create_rider_request_delete, name='delete'),
-    path('create_rider/<int:userid>', views.create_rider_request_list),
-    path('create_rider/all/<int:userid>', views.all_create_rider_request_list),
-    path('import_classification/', views.import_classification_request),
-    path('import_classification/delete/<int:pk>', views.import_classification_request_delete),
-    path('import_classification/<int:userid>', views.import_classification_request_list),
-    path('import_classification/all/<int:userid>', views.all_import_classification_request_list),
+    path('delete/<str:routine>/<int:pk>', views.delete_rq),
+    path('get/<str:routine>/<int:userid>', views.get_request_list),
+    path('all/<str:routine>/<int:userid>', views.all_get_request_list),
+    path('create/<str:routine>/', views.create_rq),
+    path('create_file/<str:routine>/', views.create_file_rq),
 ]
