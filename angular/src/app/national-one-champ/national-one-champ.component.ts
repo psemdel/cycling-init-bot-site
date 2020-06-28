@@ -4,40 +4,42 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
 import { BotRequest, User} from '@app/models/models';
-import { nationalities, genders} from '@app/models/lists';
+import { nationalities} from '@app/models/lists';
 
 @Component({
-  selector: 'app-create-rider',
-  templateUrl: './create-rider.component.html',
-  styleUrls: ['./create-rider.component.css']
+  selector: 'national-one-champ',
+  templateUrl: './national-one-champ.component.html',
+  styleUrls: ['./national-one-champ.component.css']
 })
 
-export class CreateRiderComponent implements OnInit {
+export class NationalOneChampComponent implements OnInit {
   currentUser: User;
   registerForm: FormGroup;
   botrequest: BotRequest = new BotRequest();
   submitted = false;
   success = false;
   lastname: string;
+  years:Array<any> = [];
   nationalities= nationalities;
-  genders=genders;
-    
+  
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
     ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+              this.years = Array(30).fill(0).map((x,i)=>2000+i);
    }
 
   ngOnInit() {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
-            name: ['', Validators.required],
-            gender: ['', Validators.required],
+            year_begin: ['', Validators.required],
+            year_end: ['', Validators.required],
             nationality: ['', Validators.required],
-            });
-      //  this.registerForm.controls.gender.setValue=this.genders[1].value; //does not work yet
-  }
+            },
+            {validator: this.checkYear}
+            );
+     }
 
   get f() { return this.registerForm.controls; }
 
@@ -58,29 +60,33 @@ export class CreateRiderComponent implements OnInit {
        return;
     }
     //display in the interface
-    this.lastname=this.f.name.value;  
+    this.lastname=this.f.nationality.value;  
     
-    Object.keys(this.registerForm.controls).forEach(key => {
+   Object.keys(this.registerForm.controls).forEach(key => {
       this.botrequest[key]=this.registerForm.controls[key].value;
     });
-    
+
     this.botrequest.author=this.currentUser.id;
     this.save();
   }
 
   save() {
-    this.botRequestService.createRq('create_rider',this.botrequest)
+    this.botRequestService.createRq('national_one_champ',this.botrequest)
       .subscribe(
         data => {
-          console.log('creater rider request success');
+          console.log('national one champ request success');
           this.success = true;
         },
         error => {
             console.log(error);
         });
      this.botrequest = new BotRequest();
-        
   }
-
-
+  
+  checkYear(group: FormGroup) { // here we have the 'passwords' group
+      let year_begin = group.get('year_begin').value;
+      let year_end = group.get('year_end').value;
+    
+      return year_begin <= year_end ? null : { NotOk: true }     
+    }
 }

@@ -14,6 +14,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
@@ -27,6 +30,16 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent} from './login/login.component';
 import { RegisterComponent} from './register/register.component';
 import { ImportClassificationComponent } from './import-classification/import-classification.component';
+import { NationalOneChampComponent} from './national-one-champ/national-one-champ.component';
+import { NationalAllChampsComponent} from './national-all-champs/national-all-champs.component';
+import { StartListComponent} from './start-list/start-list.component';
+import { StagesComponent} from './stages/stages.component';
+import { RaceComponent} from './race/race.component';
+import { TeamComponent} from './team/team.component';
+import { UCIrankingComponent} from './UCIranking/UCIranking.component';
+import { SortDateComponent} from './sort-date/sort-date.component';
+import { SortNameComponent} from './sort-name/sort-name.component';
+
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 
@@ -53,11 +66,16 @@ import {ErrorInterceptor} from './guard/error.interceptor';
   MatDividerModule,
   MatSelectModule,
   MatProgressBarModule,
+  MatDatepickerModule,
+  MatMomentDateModule,
   ],
   declarations: [ AppComponent, MenuComponent,MenuPersComponent, TopbarComponent, CreateRiderComponent, HomeComponent,
                 RequestListComponent, AllRequestListComponent,
                 LoginComponent, RegisterComponent, ImportClassificationComponent,
-                ConfirmEmailComponent
+                NationalOneChampComponent, NationalAllChampsComponent,
+                ConfirmEmailComponent,  StartListComponent, RaceComponent,
+                StagesComponent, TeamComponent, UCIrankingComponent,
+                SortDateComponent, SortNameComponent
                 ],
   entryComponents: [MenuComponent],
   bootstrap:    [ AppComponent ],
@@ -65,6 +83,7 @@ import {ErrorInterceptor} from './guard/error.interceptor';
       {provide: APP_BASE_HREF, useValue: '/'},
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+      MatMomentDateModule,
   ]
 })
 export class AppModule { }

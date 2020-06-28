@@ -17,7 +17,7 @@
               </button>
             </td>
             <td>
-              <button mat-raised-button color="warn" type="button" (click)='deleteCreateRider(botrequest)'>
+              <button mat-raised-button color="warn" type="button" (click)='delete_rq("create_rider",botrequest)'>
                 <mat-icon>clear</mat-icon>
               </button>
             </td>
@@ -43,10 +43,244 @@
           </button>
         </td>
         <td>
-          <button mat-raised-button color="warn" type="button" (click)='deleteImportClassification(botrequest)'>
+          <button mat-raised-button color="warn" type="button" (click)='delete_rq("import_classification",botrequest)'>
             <mat-icon>clear</mat-icon>
           </button>
         </td>
     </tr>
 </table>
+</div>
+
+<div *ngIf="(national_all_champs_botrequests | async)?.length!=0">
+    <h2>Championships creation requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Year</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of national_all_champs_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.year}}</td>
+            <td>{{botrequest.status}}</td>
+            
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("national_all_champs",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(national_one_champ_botrequests | async)?.length!=0">
+    <h2>One championship creation requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Year, begin</th><th>Year, end</th><th>Country</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of national_one_champ_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.year_begin}}</td>
+            <td>{{botrequest.year_end}}</td>
+            <td>{{botrequest.nationality}}</td>
+            
+            <td>{{botrequest.status}}</td>
+            
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("national_one_champ",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(start_list_botrequests | async)?.length!=0">
+    <h2>Start list requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Item</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of start_list_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.item_id}}</td>
+            <td>{{botrequest.status}}</td>
+           
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("start_list",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(race_botrequests | async)?.length!=0">
+    <h2>Start list requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Name</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of race_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.name}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("race",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(stages_botrequests | async)?.length!=0">
+    <h2>Start list requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Item</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of stages_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.item_id}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("stages",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(team_botrequests | async)?.length!=0">
+    <h2>Team season requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Name</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of team_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.name}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("team",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(UCIranking_botrequests | async)?.length!=0">
+    <h2>UCI ranking requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Item</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of UCIranking_botrequests | async">
+             <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.item_id}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("UCIranking",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(sort_date_botrequests | async)?.length!=0">
+    <h2>Sort date requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Author</th><th>Item</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of sort_date_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.item_id}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("sort_date",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="(sort_name_botrequests | async)?.length!=0">
+    <h2>Sort name requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+             <th>Author</th><th>Item</th><th>Status</th><th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let botrequest of sort_name_botrequests | async">
+            <td>{{botrequest.author_name}}</td>
+            <td>{{botrequest.item_id}}</td>
+            <td>{{botrequest.status}}</td>
+            <td>
+              <button mat-raised-button color="primary" [disabled]="(botrequest.status != 'pending' && botrequest.status != 'failed')" type="button" (click)='run(botrequest)'>
+                 <mat-icon>play_arrow</mat-icon>
+              </button>
+            </td>
+            
+            <td>
+            <button mat-raised-button color="warn" type="button" (click)='delete_rq("sort_name",botrequest)'>
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+        </tr>
+    </table>
 </div>

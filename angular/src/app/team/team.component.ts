@@ -4,39 +4,41 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
 import { BotRequest, User} from '@app/models/models';
-import { nationalities, genders} from '@app/models/lists';
+import { nationalities} from '@app/models/lists';
 
 @Component({
-  selector: 'app-create-rider',
-  templateUrl: './create-rider.component.html',
-  styleUrls: ['./create-rider.component.css']
+  selector: 'team',
+  templateUrl: './team.component.html',
+  styleUrls: ['./team.component.css']
 })
 
-export class CreateRiderComponent implements OnInit {
+export class TeamComponent implements OnInit {
   currentUser: User;
   registerForm: FormGroup;
   botrequest: BotRequest = new BotRequest();
   submitted = false;
   success = false;
   lastname: string;
+  years:Array<any> = [];
   nationalities= nationalities;
-  genders=genders;
-    
+  
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
     ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+              this.years = Array(80).fill(0).map((x,i)=>1950+i);
    }
 
   ngOnInit() {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
             name: ['', Validators.required],
-            gender: ['', Validators.required],
+            item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
+            year: ['', Validators.required],
+            UCIcode: [''], //pattern
             nationality: ['', Validators.required],
             });
-      //  this.registerForm.controls.gender.setValue=this.genders[1].value; //does not work yet
   }
 
   get f() { return this.registerForm.controls; }
@@ -63,16 +65,16 @@ export class CreateRiderComponent implements OnInit {
     Object.keys(this.registerForm.controls).forEach(key => {
       this.botrequest[key]=this.registerForm.controls[key].value;
     });
-    
+
     this.botrequest.author=this.currentUser.id;
     this.save();
   }
 
   save() {
-    this.botRequestService.createRq('create_rider',this.botrequest)
+    this.botRequestService.createRq('team',this.botrequest)
       .subscribe(
         data => {
-          console.log('creater rider request success');
+          console.log('creater team request success');
           this.success = true;
         },
         error => {

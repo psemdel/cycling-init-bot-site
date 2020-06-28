@@ -10,9 +10,31 @@ class BotRequest(models.Model):
     status=models.CharField(max_length=70, null=False,blank=False, default='pending')
     routine = models.CharField(max_length=100,null=False, blank=False)
     item_id= models.CharField(max_length=70, null=False, blank=False)
-  #  request_text= models.CharField(mx_length=1000,blank=False, default='')
+
     class Meta:
         abstract = True
+
+class BotRequestWithFile(BotRequest):
+    result_file_name = models.CharField(max_length=100,null=False, blank=False)
+    
+    class Meta:
+        abstract = True
+
+class NationalAllChampsRequest(BotRequest):
+     ##--Create rider--
+    year = models.IntegerField(blank=False)
+    
+    def __str__(self):
+        return self.routine + " "+ self.year   
+    
+class NationalOneChampRequest(BotRequest):
+     ##--Create rider--
+    nationality = models.CharField(max_length=3, blank=True)
+    year_begin = models.IntegerField(blank=False)
+    year_end = models.IntegerField(blank=False)
+    
+    def __str__(self):
+        return self.routine + " "+ self.nationality     
         
 class CreateRiderRequest(BotRequest):
      ##--Create rider--
@@ -23,10 +45,69 @@ class CreateRiderRequest(BotRequest):
     def __str__(self):
         return self.routine + " "+ self.name   
    
-class ImportClassificationRequest(BotRequest):
-   classificationtype= models.IntegerField(blank=False)
-   result_file_name = models.CharField(max_length=100,null=False, blank=False)
+class ImportClassificationRequest(BotRequestWithFile):
+   classification_type= models.IntegerField(blank=False)
      
+   def __str__(self):
+        return self.routine + " "+ self.item_id
+    
+class StartListRequest(BotRequestWithFile):
+   time_of_race=models.DateTimeField(null=False,blank=False)
+   race_type= models.BooleanField(blank=False)
+   chrono= models.BooleanField(blank=False)
+   moment= models.BooleanField(blank=False)
+     
+   def __str__(self):
+        return self.routine + " "+ self.item_id
+
+class UCIrankingRequest(BotRequestWithFile):
+   year = models.IntegerField(blank=False)
+     
+   def __str__(self):
+        return self.routine + " "+ self.item_id
+
+class RaceRequest(BotRequest):
+   name = models.CharField(max_length=20, blank=True)
+    
+   time_of_race=models.DateTimeField(null=False,blank=False)
+   end_of_race=models.DateTimeField(null=False,blank=False)
+   nationality = models.CharField(max_length=3, blank=True)
+   
+   race_type= models.BooleanField(blank=False)
+   race_class = models.CharField(max_length=20, blank=True)
+   
+   create_stages= models.BooleanField(blank=False)
+   prologue= models.BooleanField(blank=False)
+   last_stage=models.IntegerField(blank=False)
+   edition_nr=models.IntegerField(blank=False)
+     
+   def __str__(self):
+        return self.routine + " "+ self.name
+
+class StagesRequest(BotRequest):
+   prologue= models.BooleanField(blank=False)
+   last_stage=models.IntegerField(blank=False)
+     
+   def __str__(self):
+        return self.routine + " "+ self.item_id
+    
+class TeamRequest(BotRequest):
+   year = models.IntegerField(blank=False)
+   nationality = models.CharField(max_length=3, blank=True)
+   UCIcode = models.CharField(max_length=3, blank=True)
+    
+   def __str__(self):
+        return self.routine + " "+ self.name  
+    
+class SortDateRequest(BotRequest):
+   prop = models.IntegerField(blank=False)
+    
+   def __str__(self):
+        return self.routine + " "+ self.item_id
+    
+class SortNameRequest(BotRequest):
+   prop = models.IntegerField(blank=False)
+    
    def __str__(self):
         return self.routine + " "+ self.item_id
     

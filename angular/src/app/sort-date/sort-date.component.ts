@@ -4,24 +4,31 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
 import { BotRequest, User} from '@app/models/models';
-import { nationalities, genders} from '@app/models/lists';
+
+interface Property {
+  value: number;
+  viewValue: string;
+}
 
 @Component({
-  selector: 'app-create-rider',
-  templateUrl: './create-rider.component.html',
-  styleUrls: ['./create-rider.component.css']
+  selector: 'sort-date',
+  templateUrl: './sort-date.component.html',
+  styleUrls: ['./sort-date.component.css']
 })
 
-export class CreateRiderComponent implements OnInit {
+export class SortDateComponent implements OnInit {
   currentUser: User;
   registerForm: FormGroup;
   botrequest: BotRequest = new BotRequest();
   submitted = false;
   success = false;
   lastname: string;
-  nationalities= nationalities;
-  genders=genders;
-    
+  
+  properties: Property[] = [
+    {value: 527, viewValue: 'has part (P527)'},
+    {value: 2522, viewValue: 'victory (P2522)'},
+  ];
+  
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
@@ -32,11 +39,9 @@ export class CreateRiderComponent implements OnInit {
   ngOnInit() {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
-            name: ['', Validators.required],
-            gender: ['', Validators.required],
-            nationality: ['', Validators.required],
+            item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
+            property: ['', Validators.required],
             });
-      //  this.registerForm.controls.gender.setValue=this.genders[1].value; //does not work yet
   }
 
   get f() { return this.registerForm.controls; }
@@ -58,21 +63,21 @@ export class CreateRiderComponent implements OnInit {
        return;
     }
     //display in the interface
-    this.lastname=this.f.name.value;  
-    
+    this.lastname=this.f.item_id.value;  
+
     Object.keys(this.registerForm.controls).forEach(key => {
       this.botrequest[key]=this.registerForm.controls[key].value;
     });
-    
+
     this.botrequest.author=this.currentUser.id;
     this.save();
   }
 
   save() {
-    this.botRequestService.createRq('create_rider',this.botrequest)
+    this.botRequestService.createRq('sort_date',this.botrequest)
       .subscribe(
         data => {
-          console.log('creater rider request success');
+          console.log('creater date sorting request success');
           this.success = true;
         },
         error => {

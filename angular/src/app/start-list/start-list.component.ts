@@ -8,22 +8,30 @@ import { HttpClient, HttpResponse, HttpRequest,
 import { of } from 'rxjs/observable/of';
 import { catchError, last, map, tap } from 'rxjs/operators';
 
-//import {FileUploadService} from '@ser/file-upload.service';
 import {AuthenticationService } from '@ser/authentication.service';
 
-import { BotRequest, User, FileUploadModel} from '@app/models/models';
+import { BotRequest, User,FileUploadModel} from '@app/models/models';
+import { race_types, yesnos} from '@app/models/lists';
 
 import { environment } from '@env/environment';
 
-interface ClassificationType {
-  value: number;
+import { MY_FORMATS} from '@app/models/date-format';
+import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
+
+interface Moment {
+  value: boolean;
   viewValue: string;
 }
 
 @Component({
-  selector: 'import-classification',
-  templateUrl: './import-classification.component.html',
-  styleUrls: ['./import-classification.component.css'],
+  selector: 'start-list',
+  templateUrl: './start-list.component.html',
+  styleUrls: ['./start-list.component.css'],
+  providers: [
+  {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+  {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
+  ],
   animations: [
             trigger('fadeInOut', [
                   state('in', style({ opacity: 100 })),
@@ -34,12 +42,14 @@ interface ClassificationType {
       ]
 })
 
-export class ImportClassificationComponent implements OnInit {
+export class StartListComponent implements OnInit {
   currentUser: User;
   registerForm: FormGroup;
   submitted = false;
   success = false;
   lastname: string;
+  yesnos=yesnos;
+  race_types=race_types;
   
   botrequest: BotRequest = new BotRequest();
   files: Array<FileUploadModel> = [];
@@ -47,16 +57,10 @@ export class ImportClassificationComponent implements OnInit {
   
   exterror=false;
   sizeerror=false;
- 
-  classification_types: ClassificationType[] = [
-    {value: 0, viewValue: 'General'},
-    {value: 1, viewValue: 'Stage classification'},
-    {value: 2, viewValue: 'Points'},
-    {value: 3, viewValue: 'Mountain'},  
-    {value: 4, viewValue: 'Youth by time'},
-    {value: 7, viewValue: 'Youth by points'},    
-    {value: 5, viewValue: 'Team by time'}, 
-    {value: 6, viewValue: 'Team by points'},             
+   
+  moments: Moment[] = [
+    {value: false, viewValue: 'First stage/prologue'},
+    {value: true, viewValue: 'End stage'},
   ];
 
   constructor(private botRequestService: BotRequestService,
@@ -69,9 +73,13 @@ export class ImportClassificationComponent implements OnInit {
    
   ngOnInit() {
         this.lastname="";
+        let d: Date = new Date();
         this.registerForm = this.formBuilder.group({
             item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
-            classification_type: [0, Validators.required],
+            race_type: [false, Validators.required],
+            time_of_race: [{date: {year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate()}}, Validators.required],
+            moment: [false],
+            chrono: [true, Validators.required],
             file: [null, Validators.required]
             });
   }
@@ -122,8 +130,10 @@ export class ImportClassificationComponent implements OnInit {
     //display in the interface
     this.lastname=this.f.item_id.value;  
     
-    this.botrequest.item_id=this.f.item_id.value;
-    this.botrequest.classification_type=this.f.classification_type.value;
+    Object.keys(this.registerForm.controls).forEach(key => {
+      this.botrequest[key]=this.registerForm.controls[key].value;
+    });
+    
     this.botrequest.author=this.currentUser.id;
     
     this.uploadFile(this.files[0], this.botrequest);
@@ -136,7 +146,7 @@ export class ImportClassificationComponent implements OnInit {
             fd.append('file', file.data);
             fd.append('botrequest',JSON.stringify(botrequest))
 
-            const req = new HttpRequest('POST',  `${this.baseUrl}/create_file/import_classification/`, fd, {
+            const req = new HttpRequest('POST',  `${this.baseUrl}/create_file/start_list/`, fd, {
                   reportProgress: true
             });
 

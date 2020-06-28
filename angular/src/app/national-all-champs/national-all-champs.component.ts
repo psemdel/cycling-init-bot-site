@@ -4,40 +4,36 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
 import { BotRequest, User} from '@app/models/models';
-import { nationalities, genders} from '@app/models/lists';
 
 @Component({
-  selector: 'app-create-rider',
-  templateUrl: './create-rider.component.html',
-  styleUrls: ['./create-rider.component.css']
+  selector: 'national-all-champs',
+  templateUrl: './national-all-champs.component.html',
+  styleUrls: ['./national-all-champs.component.css']
 })
 
-export class CreateRiderComponent implements OnInit {
+export class NationalAllChampsComponent implements OnInit {
   currentUser: User;
   registerForm: FormGroup;
   botrequest: BotRequest = new BotRequest();
   submitted = false;
   success = false;
   lastname: string;
-  nationalities= nationalities;
-  genders=genders;
-    
+  years:Array<any> = [];
+
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
     ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+              this.years = Array(30).fill(0).map((x,i)=>2000+i);
    }
 
   ngOnInit() {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
-            name: ['', Validators.required],
-            gender: ['', Validators.required],
-            nationality: ['', Validators.required],
+            year: [2021, Validators.required],
             });
-      //  this.registerForm.controls.gender.setValue=this.genders[1].value; //does not work yet
-  }
+     }
 
   get f() { return this.registerForm.controls; }
 
@@ -58,29 +54,22 @@ export class CreateRiderComponent implements OnInit {
        return;
     }
     //display in the interface
-    this.lastname=this.f.name.value;  
-    
-    Object.keys(this.registerForm.controls).forEach(key => {
-      this.botrequest[key]=this.registerForm.controls[key].value;
-    });
-    
+    this.lastname=this.f.year.value;  
+    this.botrequest.year=this.f.year.value;
     this.botrequest.author=this.currentUser.id;
     this.save();
   }
 
   save() {
-    this.botRequestService.createRq('create_rider',this.botrequest)
+    this.botRequestService.createRq('national_all_champs',this.botrequest)
       .subscribe(
         data => {
-          console.log('creater rider request success');
+          console.log('national all champs request success');
           this.success = true;
         },
         error => {
             console.log(error);
         });
      this.botrequest = new BotRequest();
-        
   }
-
-
 }

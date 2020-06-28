@@ -1,10 +1,11 @@
 <div style="width: 600px;">
-    <h3>Import race results</h3>
+    <h3>Import yearly final UCI ranking</h3>
+    <p>The ranking will be added to the corresponding calendar, to the corresponding teams and riders</p>
     <div style="width: 400px;">
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
-                  <label for=" item_id">Id of the race item on wikidata<br/>
-                  <small>for instance Q30091668 for Tour de France 2019</small>
+                  <label for=" item_id">Id of the UCI calendar<br/>
+                  <small>for instance Q57267790 for 2019 in women's road cycling</small>
                   </label>
               
                   <input type="text" class="form-control" id="item_id" formControlName="item_id"
@@ -15,18 +16,21 @@
                     </div>
                 </div>
             <br/>
-                <div class="form-group">
-                   <label for="classification_type">Type of classification</label>
-                   <select class="form-control" formControlName="classification_type"
-                      [ngClass]="{ 'is-invalid': submitted && f.classification_type.errors }">
-                      <option *ngFor="let classification_type of classification_types" [value]="classification_type.value">
-                        {{classification_type.viewValue}}
+              <div class="form-group">
+                  <label for="name">Year <br />
+                  <small>Used to fill the team ranking</small>
+                  </label>
+   
+                  <select class="form-control" id="year" formControlName="year"
+                   [ngClass]="{ 'is-invalid': submitted && f.year.errors }">
+                      <option *ngFor="let year of years" [value]="year">
+                                    {{year}}
                       </option>
-                    </select>
-                     <div *ngIf="submitted && f.classification_type.errors" class="invalid-feedback">
-                         <div *ngIf="f.classification_type.errors.required">Field required</div>
-                    </div>
-                </div>
+                  </select>
+                    <div *ngIf="submitted && f.year.errors" class="invalid-feedback">
+                        <div *ngIf="f.year.errors.required">Field required</div>
+                   </div>
+               </div>
             <br>
 
            <label>Excel or csv file from UCI web site</label>

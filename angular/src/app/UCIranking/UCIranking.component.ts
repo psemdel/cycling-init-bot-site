@@ -8,22 +8,15 @@ import { HttpClient, HttpResponse, HttpRequest,
 import { of } from 'rxjs/observable/of';
 import { catchError, last, map, tap } from 'rxjs/operators';
 
-//import {FileUploadService} from '@ser/file-upload.service';
 import {AuthenticationService } from '@ser/authentication.service';
-
 import { BotRequest, User, FileUploadModel} from '@app/models/models';
 
 import { environment } from '@env/environment';
 
-interface ClassificationType {
-  value: number;
-  viewValue: string;
-}
-
 @Component({
-  selector: 'import-classification',
-  templateUrl: './import-classification.component.html',
-  styleUrls: ['./import-classification.component.css'],
+  selector: 'UCIranking',
+  templateUrl: './UCIranking.component.html',
+  styleUrls: ['./UCIranking.component.css'],
   animations: [
             trigger('fadeInOut', [
                   state('in', style({ opacity: 100 })),
@@ -34,12 +27,13 @@ interface ClassificationType {
       ]
 })
 
-export class ImportClassificationComponent implements OnInit {
+export class UCIrankingComponent implements OnInit {
   currentUser: User;
   registerForm: FormGroup;
   submitted = false;
   success = false;
   lastname: string;
+  years:Array<any> = [];
   
   botrequest: BotRequest = new BotRequest();
   files: Array<FileUploadModel> = [];
@@ -48,30 +42,20 @@ export class ImportClassificationComponent implements OnInit {
   exterror=false;
   sizeerror=false;
  
-  classification_types: ClassificationType[] = [
-    {value: 0, viewValue: 'General'},
-    {value: 1, viewValue: 'Stage classification'},
-    {value: 2, viewValue: 'Points'},
-    {value: 3, viewValue: 'Mountain'},  
-    {value: 4, viewValue: 'Youth by time'},
-    {value: 7, viewValue: 'Youth by points'},    
-    {value: 5, viewValue: 'Team by time'}, 
-    {value: 6, viewValue: 'Team by points'},             
-  ];
-
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder, 
               private authenticationService: AuthenticationService,
               private http: HttpClient,
   ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+              this.years = Array(40).fill(0).map((x,i)=>1994+i);
    }
    
   ngOnInit() {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
             item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
-            classification_type: [0, Validators.required],
+            year: ['', Validators.required],
             file: [null, Validators.required]
             });
   }
@@ -122,8 +106,10 @@ export class ImportClassificationComponent implements OnInit {
     //display in the interface
     this.lastname=this.f.item_id.value;  
     
-    this.botrequest.item_id=this.f.item_id.value;
-    this.botrequest.classification_type=this.f.classification_type.value;
+    Object.keys(this.registerForm.controls).forEach(key => {
+      this.botrequest[key]=this.registerForm.controls[key].value;
+    });
+
     this.botrequest.author=this.currentUser.id;
     
     this.uploadFile(this.files[0], this.botrequest);
@@ -136,7 +122,7 @@ export class ImportClassificationComponent implements OnInit {
             fd.append('file', file.data);
             fd.append('botrequest',JSON.stringify(botrequest))
 
-            const req = new HttpRequest('POST',  `${this.baseUrl}/create_file/import_classification/`, fd, {
+            const req = new HttpRequest('POST',  `${this.baseUrl}/create_file/UCIranking/`, fd, {
                   reportProgress: true
             });
 
