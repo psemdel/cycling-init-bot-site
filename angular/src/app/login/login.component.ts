@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import {AuthenticationService } from '@ser/authentication.service';
-import { User} from '@app/models/user';
+import { User} from '@app/models/models';
 
 @Component({ templateUrl: 'login.component.html' })
 

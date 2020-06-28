@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 
-import { User} from '@app/models/user';
+import { User} from '@app/models/models';
 
 import { environment } from '@env/environment';
 
