@@ -40,7 +40,7 @@ export class SortNameComponent implements OnInit {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
             item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
-            property: ['', Validators.required],
+            prop: ['', Validators.required],
             });
   }
 
