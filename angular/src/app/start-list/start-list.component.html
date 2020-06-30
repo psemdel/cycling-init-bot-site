@@ -39,7 +39,7 @@
                     </div>
                 </div>
             <br>
-            <div *ngIf="registerForm.value.race_type" class="form-group">
+            <div *ngIf="f.race_type.value=='true'" class="form-group">
                 <label for="moment">
                 Start list corresponding to :<br/>
                 <small>By giving prologue, the start list at the beginning of the stage race is filled<br/>
@@ -51,8 +51,8 @@
                         {{moment.viewValue}}
                       </option>
                 </select>
-            </div>
             <br/>
+            </div>
              <div class="form-group">
                    <label for="chrono">Is the race an ITT or include an ITT?</label>
                    <small>To decide whether to display or not the jersey of ITT national champion</small>

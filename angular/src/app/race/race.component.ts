@@ -48,10 +48,10 @@ export class RaceComponent implements OnInit {
             item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
             nationality: ['', Validators.required],
             time_of_race: ['', Validators.required],
-            end_of_race: ['', Validators.required],
-            race_type: [true, Validators.required],
-            //race_class1: ['', Validators.required],
-            race_class2: ['', Validators.required],
+            end_of_race: [''],
+            race_type: ['true', Validators.required], //should be true, but there is an issue
+            race_class1: ['',],
+            race_class2: [''],
             edition_nr: [''],
             create_stages: [true],
             prologue: [true],
@@ -65,25 +65,14 @@ export class RaceComponent implements OnInit {
   
   onRaceTypeChanged()
   {
-      if (this.registerForm.value.race_type){
-          this.registerForm.addControl('race_class2', new FormControl('', Validators.required));
-          this.registerForm.removeControl('race_class1');
-          this.temp1=this.registerForm.value.race_type;
-          if (this.temp1) 
-          {
-          this.temp2="oui";
-          }
-          else
-          {
-          this.temp2="non";
-          }          
+      if (this.registerForm.value.race_type=='true'){
+          this.registerForm.controls.race_class2.setValidators(Validators.required);
+          this.registerForm.controls.race_class1.setValidators(null);
       }
       else
       {   
-      this.registerForm.addControl('race_class1', new FormControl('', Validators.required));
-      this.registerForm.removeControl('race_class2');
-                this.temp1=this.registerForm.value.race_type;
-          this.temp2=this.registerForm.controls.race_type.value;
+          this.registerForm.controls.race_class1.setValidators(Validators.required);
+          this.registerForm.controls.race_class2.setValidators(null);
       }
  }
 
@@ -108,9 +97,28 @@ export class RaceComponent implements OnInit {
     //display in the interface
     this.lastname=this.f.name.value;  
     
-    Object.keys(this.registerForm.controls).forEach(key => {
-      this.botrequest[key]=this.registerForm.controls[key].value;
-    });
+    this.botrequest.name=this.f.name.value;
+    this.botrequest.item_id=this.f.item_id.value;
+    this.botrequest.nationality=this.f.nationality.value;
+    this.botrequest.time_of_race=this.f.time_of_race.value;
+    this.botrequest.race_type=this.f.race_type.value;
+    this.botrequest.edition_nr=this.f.edition_nr.value;
+    
+    if (this.registerForm.value.race_type=='true')
+    {
+        this.botrequest.end_of_race=this.f.end_of_race.value;
+        this.botrequest.race_class=this.f.race_class2.value;
+        this.botrequest.prologue=this.f.prologue.value;
+        this.botrequest.last_stage=this.f.last_stage.value;
+        this.botrequest.create_stages=this.f.create_stages.value;
+    }
+    else
+    {
+        this.botrequest.race_class=this.f.race_class1.value;
+        this.botrequest.create_stages=false;
+        this.botrequest.prologue=false;
+        this.botrequest.last_stage=1;
+     }
 
     this.botrequest.author=this.currentUser.id;
     this.save();

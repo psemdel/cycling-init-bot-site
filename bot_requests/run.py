@@ -56,13 +56,14 @@ def run_bot(request_id, rq_routine):
         elif rq_routine=="race":
             print("race")
             from bot_requests.Bot import race_creator
-
+            
+            race_begin=rq.time_of_race
+            year=race_begin.year
             if rq.race_type: #stage race
                 single_race=False
-                race_begin=rq.time_of_race
-                year=race_begin.year
+                
                 if rq.prologue:
-                    first_stage=0
+                   first_stage=0
                 else:
                    first_stage=1 
                 
@@ -81,8 +82,19 @@ def run_bot(request_id, rq_routine):
                                   create_stages=rq.create_stages, 
                                   first_stage=first_stage,
                                   last_stage=rq.last_stage)
-           
-            
+            else:
+                single_race=True
+                
+                if not test_site:
+                    race_creator.f(pywikibot,site,repo,time,nation_table,
+                                  rq.name,
+                                  rq.item_id,
+                                  year,race_begin,
+                                  rq.nationality,
+                                  rq.race_class,
+                                  single_race,
+                                  rq.edition_nr,
+                                  )
         elif rq_routine=="stages":
             print("stages")
             

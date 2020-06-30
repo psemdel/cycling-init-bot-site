@@ -67,18 +67,18 @@ class UCIrankingRequest(BotRequestWithFile):
         return self.routine + " "+ self.item_id
 
 class RaceRequest(BotRequest):
-   name = models.CharField(max_length=20, blank=True)
+   name = models.CharField(max_length=20, blank=False,default="race")
     
    time_of_race=models.DateTimeField(null=False,blank=False)
-   end_of_race=models.DateTimeField(null=False,blank=False)
+   end_of_race=models.DateTimeField(null=True,blank=True)
    nationality = models.CharField(max_length=3, blank=True)
    
    race_type= models.BooleanField(blank=False)
    race_class = models.CharField(max_length=20, blank=True)
    
-   create_stages= models.BooleanField(blank=False)
-   prologue= models.BooleanField(blank=False)
-   last_stage=models.IntegerField(blank=False)
+   create_stages= models.BooleanField(blank=True)
+   prologue= models.BooleanField(blank=True)
+   last_stage=models.IntegerField(blank=True)
    edition_nr=models.IntegerField(blank=False)
      
    def __str__(self):
@@ -92,6 +92,8 @@ class StagesRequest(BotRequest):
         return self.routine + " "+ self.item_id
     
 class TeamRequest(BotRequest):
+   name = models.CharField(max_length=20, blank=False,default="team")
+    
    year = models.IntegerField(blank=False)
    nationality = models.CharField(max_length=3, blank=True)
    UCIcode = models.CharField(max_length=3, blank=True)

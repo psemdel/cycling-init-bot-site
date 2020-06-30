@@ -3,7 +3,7 @@ Created on Thu Jan  4 15:28:39 2018
 
 @author: psemdel
 """
-from cycling_init_bot_low import *
+from .cycling_init_bot_low import *
 
 def f(
         pywikibot,
