@@ -324,7 +324,7 @@ def table_reader(filename,result_dic, startline, verbose):
         else:
             filepathcsv=None
             filepathxlsx='uploads/'+filename
-    elseif filename=="champ":
+    elif filename=="champ":
         filepath="src/input/champ.csv"
    # else:
     #filepathcsv='src/input/'+filename+'.csv'

@@ -45,18 +45,23 @@ def serial_save(request_serializer, request, rq_data):
 @ratelimit(key='ip', rate=RATELIMRQ)
 @api_view(['POST'])  
 def create_rq(request,routine):
-    if request.method == 'POST':
-        serializer=routine_to_serializer(routine)
-        rq_data=JSONParser().parse(request)
-        rq_data.update(entry_time=timezone.now() ) 
-        rq_data.update(routine=routine)
-        
-        ##supplementary info depending on the routine
-        if routine in ["create_rider", "race", "national_all_champs", "national_one_champ"]:
-            rq_data.update(item_id="Q1")
-        
-        request_serializer =serializer(data=rq_data)
-        return serial_save(request_serializer, request, rq_data)
+    try:
+        if request.method == 'POST':
+            serializer=routine_to_serializer(routine)
+            rq_data=JSONParser().parse(request)
+            rq_data.update(entry_time=timezone.now() ) 
+            rq_data.update(routine=routine)
+            
+            ##supplementary info depending on the routine
+            if routine in ["create_rider", "race", "national_all_champs", "national_one_champ"]:
+                rq_data.update(item_id="Q1")
+            
+            request_serializer =serializer(data=rq_data)
+            return serial_save(request_serializer, request, rq_data)
+        else:
+            return JsonResponse({'error':'no POST request'}, status=status.HTTP_400_BAD_REQUEST)   
+    except:
+        return JsonResponse({'status create':'failed'}, status=status.HTTP_417_EXPECTATION_FAILED)    
             
 def create_file_rq(request,routine):  
      if request.method == 'POST' and request.FILES:
@@ -114,14 +119,17 @@ def delete_rq(request,pk,routine):
         if request.method == 'DELETE':
             table=routine_to_model(routine)
             if pk is not None:
-                rq =table.objects.get(pk=pk)
+                try:
+                    rq =table.objects.get(pk=pk)
+                except:
+                    return JsonResponse({"delete":"primary key not found"},status=status.HTTP_400_BAD_REQUEST)
                 rq.delete()
-            return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+            return JsonResponse({"delete":"success"},status=status.HTTP_204_NO_CONTENT)
         else:
             return JsonResponse({"delete":"failed"},status=status.HTTP_400_BAD_REQUEST)
     except:
         print("plantage")
-        return JsonResponse({"delete":"failed"},status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"delete":"plantage"},status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])    
 def get_request_list(request, userid, routine):

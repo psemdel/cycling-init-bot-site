@@ -2,4 +2,7 @@
 **/apicache-py3/
 **/CyclingInitBotSite/etc/
 **/staticfiles/
+**/dist
+**/node_modules
+user-password.py
 
