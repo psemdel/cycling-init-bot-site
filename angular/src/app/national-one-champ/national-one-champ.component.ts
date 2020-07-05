@@ -34,11 +34,9 @@ export class NationalOneChampComponent implements OnInit {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
             year_begin: ['', Validators.required],
-            year_end: ['', Validators.required],
+            year_end: ['', [Validators.required]],
             nationality: ['', Validators.required],
-            },
-            {validator: this.checkYear}
-            );
+            },{validators: this.checkYear});
      }
 
   get f() { return this.registerForm.controls; }
@@ -83,10 +81,10 @@ export class NationalOneChampComponent implements OnInit {
      this.botrequest = new BotRequest();
   }
   
-  checkYear(group: FormGroup) { // here we have the 'passwords' group
+  checkYear(group: FormGroup) { 
       let year_begin = group.get('year_begin').value;
       let year_end = group.get('year_end').value;
-    
-      return year_begin <= year_end ? null : { NotOk: true }     
+     
+      return year_begin <= year_end ? null : { notOk: false }    
     }
 }

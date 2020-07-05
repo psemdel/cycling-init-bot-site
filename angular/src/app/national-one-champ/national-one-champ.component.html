@@ -43,7 +43,7 @@
                    </select>
                 <div *ngIf="submitted && f.year_end.errors" class="invalid-feedback">
                     <div *ngIf="f.year_end.errors.required">Field required</div>
-                    <div *ngIf="form.hasError('NotOk')">Begin year higher than end year</div>
+                    <div *ngIf="f.year_end.errors.notOk">Begin year higher than end year</div>
                </div>
            </div>
            

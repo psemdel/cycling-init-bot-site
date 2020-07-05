@@ -6,10 +6,9 @@ Created on Thu Apr 23 18:03:01 2020
 @author: maxime
 """
 import pywikibot #avoid confusion
-from bot_requests.Bot import nation_team_table
+from bot_requests.src import nation_team_table
 import time
 
-from .models import *
 from .dic import routine_to_model
 
 site = pywikibot.Site("wikidata", "wikidata")
@@ -36,12 +35,12 @@ def run_bot(request_id, rq_routine):
         if rq_routine=="create_rider":
             #load request
             print("create rider")
-            from bot_requests.Bot import rider_fast_init
+            from bot_requests.src import rider_fast_init
             gender=rq.gender
             if not test_site:
                 rider_fast_init.f(pywikibot,site,repo,time,nation_table, rq.name,rq.nationality )
         elif rq_routine=="import_classification":
-             from bot_requests.Bot import classification_importer
+             from bot_requests.src import classification_importer
              id_race=rq.item_id
              stage_or_general=rq.classificationtype
              final=False
@@ -55,10 +54,8 @@ def run_bot(request_id, rq_routine):
              return 0
         elif rq_routine=="race":
             print("race")
-            from bot_requests.Bot import race_creator
+            from bot_requests.src import race_creator
             
-            race_begin=rq.time_of_race
-            year=race_begin.year
             if rq.race_type: #stage race
                 single_race=False
                 
@@ -68,15 +65,15 @@ def run_bot(request_id, rq_routine):
                    first_stage=1 
                 
                 if not test_site:
-                    race_creator.f(pywikibot,site,repo,time,nation_table,
+                    race_creator.f(pywikibot,site,repo,time,
+                                  nation_table,
                                   rq.name,
-                                  rq.item_id,
-                                  year,race_begin,
-                                  rq.nationality,
-                                  rq.race_class,
                                   single_race,
-                                  rq.edition_nr,
-                               #   stage_race_id=stage_race_id, 
+                                  id_race_master=rq.item_id,
+                                  race_begin=rq.time_of_race,
+                                  countryCIO=rq.nationality,
+                                  classe=rq.race_class,
+                                  edition_nr=rq.edition_nr,
                                   end_date=rq.end_of_race,
                                   only_stages=False,
                                   create_stages=rq.create_stages, 
@@ -86,49 +83,42 @@ def run_bot(request_id, rq_routine):
                 single_race=True
                 
                 if not test_site:
-                    race_creator.f(pywikibot,site,repo,time,nation_table,
+                    race_creator.f(pywikibot,site,repo,time,
+                                  nation_table,
                                   rq.name,
-                                  rq.item_id,
-                                  year,race_begin,
-                                  rq.nationality,
-                                  rq.race_class,
                                   single_race,
-                                  rq.edition_nr,
+                                  id_race_master=rq.item_id,
+                                  race_begin=rq.time_of_race,
+                                  countryCIO=rq.nationality,
+                                  classe=rq.race_class,
+                                  edition_nr=rq.edition_nr,
                                   )
+                    
         elif rq_routine=="stages":
             print("stages")
             
-            from bot_requests.Bot import race_creator
+            from bot_requests.src import race_creator
 
             single_race=False
-            race_begin=rq.time_of_race
-            year=race_begin.year
             if rq.prologue:
                 first_stage=0
             else:
                 first_stage=1 
 
             if not test_site:
-                race_creator.f(pywikibot,site,repo,time,nation_table,
-                              rq.name,
-                              rq.item_id,
-                              year,
-                              race_begin,
-                              None,
-                              rq.race_class,
-                              single_race,
-                              rq.edition_nr,
-                              stage_race_id=rq.item_id, 
-                              end_date=rq.end_of_race,
-                              only_stages=True,
-                              create_stages=rq.create_stages, 
-                              first_stage=first_stage,
-                              last_stage=rq.last_stage)
-            
+                race_creator.f(pywikibot,site,repo,time,
+                                  nation_table,
+                                  rq.name,
+                                  single_race,
+                                  stage_race_id=rq.item_id, 
+                                  only_stages=True,
+                                  first_stage=first_stage,
+                                  last_stage=rq.last_stage)
+
         elif rq_routine=="team":
             print("team")
-            from bot_requests.Bot import team_creator
-            from bot_requests.Bot import pro_team_table
+            from bot_requests.src import team_creator
+            from bot_requests.src import pro_team_table
             
             team_table = [[0 for x in range(7)] for y in range(2)]
             team_table[1][1] = rq.name
@@ -146,14 +136,14 @@ def run_bot(request_id, rq_routine):
         elif rq_routine=="sort_date":
             print("sort_date")
             
-            from bot_requests.Bot import sorter
+            from bot_requests.src import sorter
             
             if not test_site:
                 sorter.date_sorter(pywikibot,site,repo,time,rq.item_id,rq.prop,test )
 
         elif rq_routine=="sort_name":
             print("sort_name")
-            from bot_requests.Bot import sorter
+            from bot_requests.src import sorter
             
             if not test_site:
                 sorter.name_sorter( pywikibot,site,repo,time,rq.item_id, rq.prop, test)
