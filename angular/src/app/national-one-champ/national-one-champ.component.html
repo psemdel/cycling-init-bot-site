@@ -17,6 +17,20 @@
             </div>
             
             <br>
+            <div class="form-group">
+          <label for="category">Category</label>
+              <select class="form-control" formControlName="category"
+              [ngClass]="{ 'is-invalid': submitted && f.category.errors }">
+                  <option *ngFor="let category of categories" [value]="category.value">
+                    {{category.viewValue}}
+                  </option>
+                </select>
+                <div *ngIf="submitted && f.category.errors" class="invalid-feedback">
+                    <div *ngIf="f.category.errors.required">Field required</div>
+               </div>
+    
+            </div>
+            <br>
             
              <div class="form-group">
                  <label for="name">Start year </label>

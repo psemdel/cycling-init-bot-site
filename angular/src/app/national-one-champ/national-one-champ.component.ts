@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
 import { BotRequest, User} from '@app/models/models';
-import { nationalities} from '@app/models/lists';
+import { nationalities,  categories} from '@app/models/lists';
 
 @Component({
   selector: 'national-one-champ',
@@ -21,6 +21,7 @@ export class NationalOneChampComponent implements OnInit {
   lastname: string;
   years:Array<any> = [];
   nationalities= nationalities;
+  categories=categories;
   
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
@@ -36,6 +37,7 @@ export class NationalOneChampComponent implements OnInit {
             year_begin: ['', Validators.required],
             year_end: ['', [Validators.required]],
             nationality: ['', Validators.required],
+            category: ['', Validators.required],
             },{validators: this.checkYear});
      }
 

@@ -32,6 +32,7 @@ class NationalOneChampRequest(BotRequest):
     nationality = models.CharField(max_length=3, blank=True)
     year_begin = models.IntegerField(blank=False)
     year_end = models.IntegerField(blank=False)
+    category =models.CharField(max_length=10, blank=True)   
     
     def __str__(self):
         return self.routine + " "+ self.nationality     
@@ -40,7 +41,7 @@ class CreateRiderRequest(BotRequest):
      ##--Create rider--
     nationality = models.CharField(max_length=3, blank=True)
     name = models.CharField(max_length=70, blank=True)
-    gender =models.CharField(max_length=1, blank=True)   
+    gender =models.CharField(max_length=5, blank=True)   
     
     def __str__(self):
         return self.routine + " "+ self.name   

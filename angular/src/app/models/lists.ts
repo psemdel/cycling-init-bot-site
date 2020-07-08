@@ -52,9 +52,25 @@ interface Gender {
 }
 
 export const genders: Gender[] = [
-    {value: 'm', viewValue: 'Man'},
-    {value: 'f', viewValue: 'Woman'},
+    {value: 'man', viewValue: 'Man'},
+    {value: 'woman', viewValue: 'Woman'},
   ];
+  
+interface Category {
+  value: string;
+  viewValue: string;
+}
+
+export const categories: Category[] = [
+    {value: 'man', viewValue: 'Man Elite'},
+    {value: 'woman', viewValue: 'Woman Elite'},
+    {value: 'manU', viewValue: 'Man U23 (not implemented yet)'},
+    {value: 'womanU', viewValue: 'Woman U23 (not implemented yet)'},   
+    {value: 'manJ', viewValue: 'Man juniors (not implemented yet)'},
+    {value: 'womanJ', viewValue: 'Woman juniors (not implemented yet)'},  
+    {value: 'all', viewValue: 'All (not implemented yet)'},     
+  ];  
+  
 
 interface RaceType {
   value: boolean;

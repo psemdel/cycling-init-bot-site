@@ -36,9 +36,10 @@ def run_bot(request_id, rq_routine):
             #load request
             print("create rider")
             from bot_requests.src import rider_fast_init
-            gender=rq.gender
+
             if not test_site:
-                rider_fast_init.f(pywikibot,site,repo,time,nation_table, rq.name,rq.nationality )
+                rider_fast_init.f(pywikibot,site,repo,time,nation_table, rq.name,rq.nationality,
+                                  rq.gender)
         elif rq_routine=="import_classification":
              from bot_requests.src import classification_importer
              id_race=rq.item_id
@@ -150,12 +151,67 @@ def run_bot(request_id, rq_routine):
             
         elif rq_routine=="UCIranking":
             print("UCI ranking") 
+            from bot_requests.src import uci_classification
+            
+            id_master_UCI=rq.item_id
+            year=rq.year
+            filename=rq.result_file_name
+            cleaner=False 
+            if not test_site:
+                uci_classification.f(pywikibot,site,repo,year,id_master_UCI, filename,cleaner,test)
+            
         elif rq_routine=="start_list":
             print("start_list")
+            
+            from bot_requests.src import startlist_importer
+            
+            id_race=rq.item_id
+            if rq.race_type: #stage race
+                if rq.moment:
+                    prologue_or_final=1 #0=prologue, 1=final, 2=one day race
+                else:
+                    prologue_or_final=0
+            else:
+                prologue_or_final=2
+            chrono=rq.chrono    
+            time_of_race=rq.time_of_race
+            
+            if not test_site:
+                startlist_importer.f(pywikibot,site,repo, prologue_or_final, id_race, 
+                                   time_of_race,chrono,test,nation_table) 
+            
         elif rq_routine=="national_all_champs":
             print("national all champs")
+            from bot_requests.src import national_championship_creator
+            from bot_requests.src import cc_table
+            
+            man_or_woman=u'man' #'all'
+            option=u'clmon' #'clmoff'
+            start_year=rq.year
+            end_year=rq.year+1
+            #no CC
+            if not test_site:
+                national_championship_creator.f(pywikibot,site,repo,time,nation_table,
+                                    man_or_woman,option, start_year,end_year,False) 
+            ##with CC
+            cc_table=cc_table.load()
+            if not test_site:
+                national_championship_creator.f(pywikibot,site,repo,time,cc_table,
+                                    man_or_woman,option,start_year,end_year,True) 
+
+            
         elif rq_routine=="national_one_champ":
             print("national one champ")
+            from bot_requests.src import national_championship_creator
+            
+            man_or_woman=rq.category
+            option=u'clmon' #'clmoff'
+            start_year=rq.year_begin
+            end_year=rq.year_end
+            country=rq.nationality
+            if not test_site:
+                national_championship_creator.f(pywikibot,site,repo,time,nation_table,
+                                    man_or_woman,option, start_year,end_year,False,country=country)  
         else:
             print("routine not managed")
             return 1
