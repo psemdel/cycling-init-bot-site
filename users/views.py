@@ -36,6 +36,7 @@ def mylogout(request):
             logout(request_parsed)
             return JsonResponse({'log out':'success'},status=status.HTTP_202_ACCEPTED) 
         except:
+            
             return JsonResponse({'log out':'failure'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return JsonResponse({'log out':'failure'}, status=status.HTTP_400_BAD_REQUEST)

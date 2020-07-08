@@ -12,13 +12,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from datetime import timedelta
-import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-DEBUG=False
+DEBUG=True
 
 if DEBUG:
     #local
@@ -49,11 +49,10 @@ else:
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
     DEFAULT_FROM_EMAIL = 'cyclinginitbot@gmail.com'
-    
+
 CSRF_COOKIE_SECURE=False
 ALLOWED_HOSTS = []
 
-# Application definition
 
 # Application definition
 if DEBUG:
@@ -87,18 +86,17 @@ else:
         'djoser',
         'bot_requests.apps.BotRequestsConfig',
         'users.apps.UsersConfig',
-        # CORS
-        'corsheaders', 
     ]  
+
 
 MIDDLEWARE = [
     # CORS
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',  
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+   #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -126,18 +124,19 @@ TEMPLATES = [
 REST_FRAMEWORK = {
         'DEFAULT_AUTHENTICATION_CLASSES': [
             'rest_framework_simplejwt.authentication.JWTAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
       ],
       'DEFAULT_PERMISSION_CLASSES': ( 'rest_framework.permissions.IsAuthenticated', ),
 } 
 
 SIMPLE_JWT = {
-   'ACCESS_TOKEN_LIFETIME':  timedelta(minutes=60),     
+   'ACCESS_TOKEN_LIFETIME':  timedelta(minutes=15),     #minutes
    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'ACTIVATION_URL': '/activate/{uid}/{token}',
     'SERIALIZERS': {
          'user_create': 'users.serializers.UserSerializer'
     }
@@ -147,7 +146,6 @@ WSGI_APPLICATION = 'CyclingInitBotSite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 if DEBUG:
    DATABASES = {
        'default': {
@@ -206,17 +204,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 #heroku config:set DJANGO_STATIC_HOST=https://d4663kmspf1sqa.cloudfront.net
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DJANGO_STATIC_HOST=''
 STATIC_URL = DJANGO_STATIC_HOST + '/static/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = DJANGO_STATIC_HOST + '/uploads/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
-django_heroku.settings(locals())
