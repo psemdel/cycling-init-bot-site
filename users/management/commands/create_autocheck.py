@@ -25,9 +25,9 @@ class Command(BaseCommand):
             content_type=ct,
             )
         
-       autocheck_group.permissions.add(permission_request)
+        autocheck_group.permissions.add(permission_request)
         
-       permission_run = Permission.objects.create(
+        permission_run = Permission.objects.create(
             codename='can_run_requests',
             name='Can run requests',
             content_type=ct,

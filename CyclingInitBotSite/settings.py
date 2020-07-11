@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-DEBUG=True
+DEBUG=False
 
 if DEBUG:
     #local
@@ -146,28 +146,16 @@ WSGI_APPLICATION = 'CyclingInitBotSite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-if DEBUG:
-   DATABASES = {
-       'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'cyclingdb',
-            'USER': 'root',
-            'PASSWORD': DB_SECRET_KEY,
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-        }
-    }
-else:
-        DATABASES = {
-       'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'pgcyclingdb',
-            'USER': 'psemdel',
-            'PASSWORD': DB_SECRET_KEY,
-            'HOST': 'localhost',
-            'PORT': '',
-        }
-    }
+DATABASES = {
+'default': {
+     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+     'NAME': 'pgcyclingdb',
+     'USER': 'psemdel',
+     'PASSWORD': DB_SECRET_KEY,
+     'HOST': 'localhost',
+     'PORT': '',
+ }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

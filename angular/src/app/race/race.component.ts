@@ -55,7 +55,7 @@ export class RaceComponent implements OnInit {
             edition_nr: [''],
             create_stages: [true],
             prologue: [true],
-            last_stage: [''],
+            last_stage: [0],
     
             });
             
