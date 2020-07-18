@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django_heroku
+
 from datetime import timedelta
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,12 +132,12 @@ REST_FRAMEWORK = {
 } 
 
 SIMPLE_JWT = {
-   'ACCESS_TOKEN_LIFETIME':  timedelta(minutes=15),     #minutes
+   'ACCESS_TOKEN_LIFETIME':  timedelta(minutes=15),     #
    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 DJOSER = {
-    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_ACTIVATION_EMAIL': False,
     'ACTIVATION_URL': '/activate/{uid}/{token}',
     'SERIALIZERS': {
          'user_create': 'users.serializers.UserSerializer'
@@ -202,3 +204,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = DJANGO_STATIC_HOST + '/uploads/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+django_heroku.settings(locals())
