@@ -163,8 +163,11 @@ if DEBUG:
     }
 else:
     if os.environ.get('DATABASE_URL'):
-        DATABASES['default'] = dj_database_url.config(default=os.environ['DATABASE_URL'],conn_max_age=600, ssl_require=True)
-
+        DATABASES={
+            'default': dj_database_url.config(default=os.environ['DATABASE_URL'],conn_max_age=600, ssl_require=True)
+        }
+    else:
+        print('DATABASE_URL not found')
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
