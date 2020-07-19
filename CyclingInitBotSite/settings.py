@@ -186,10 +186,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'https://localhost:4200',
-)
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+if DEBUG:
+    CORS_ORIGIN_WHITELIST = (
+    'http://localhost:4200',
+    )
+else:
+    CORS_ORIGIN_WHITELIST = (
+        'https://cycling-init-bot-site.herokuapp.com'
+    )   
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
