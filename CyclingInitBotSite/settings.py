@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 from datetime import timedelta
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,7 +36,8 @@ if DEBUG:
         
 else:
    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') 
-   DB_SECRET_KEY =  os.environ.get('DB_SECRET_KEY') 
+#   PGUSER= os.environ.get('PGUSER') 
+#   DB_SECRET_KEY =  os.environ.get('PGPASSWORD') 
    EMAIL_SECRET_KEY = os.environ.get('EMAIL_SECRET_KEY') 
 # SECURITY WARNING: keep the secret key used in production secret!
 #
@@ -148,16 +150,20 @@ WSGI_APPLICATION = 'CyclingInitBotSite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASES = {
-'default': {
-     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-     'NAME': 'pgcyclingdb',
-     'USER': 'psemdel',
-     'PASSWORD': DB_SECRET_KEY,
-     'HOST': 'localhost',
-     'PORT': '',
- }
-}
+if DEBUG:
+    DATABASES = {
+    'default': {
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': 'pgcyclingdb',
+         'USER': 'psemdel',
+         'PASSWORD': DB_SECRET_KEY,
+         'HOST': 'localhost',
+         'PORT': '',
+     }
+    }
+else:
+    if os.environ.get('DATABASE_URL'):
+        DATABASES['default'] = dj_database_url.config(default=os.environ['DATABASE_URL'],conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
