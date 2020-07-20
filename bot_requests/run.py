@@ -30,7 +30,7 @@ def run_bot(request_id, rq_routine):
         print("request loaded")
         nation_table= nation_team_table.load()
         test=False #run the functions but make no change to wikidata
-        test_site=True #don't run the functions
+        test_site=False #don't run the functions
         
         if rq_routine=="create_rider":
             #load request
