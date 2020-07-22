@@ -195,7 +195,8 @@ if DEBUG:
     )
 else:
     CORS_ORIGIN_WHITELIST = (
-        'https://cycling-init-bot-site.herokuapp.com'
+        'https://cycling-init-bot-site.herokuapp.com',
+        'http://www.cycling-init-bot.site'
     )   
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
