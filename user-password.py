@@ -10,4 +10,8 @@
 # See https://www.mediawiki.org/wiki/Manual:Pywikibot/BotPasswords for more
 # information.
 from __future__ import absolute_import, division, unicode_literals
-('Psemdel', BotPassword('CyclingInitBot', 'udgm9lmfqon54bkcgt3evuh559jb89n0'))
+import os
+
+BOT_USER= os.environ.get('BOT_USER') 
+BOT_PASS= os.environ.get('BOT_PASS') 
+(BOT_USER, BotPassword('CyclingInitBot', BOT_PASS))
