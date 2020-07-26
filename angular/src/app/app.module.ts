@@ -16,7 +16,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
@@ -39,6 +39,7 @@ import { TeamComponent} from './team/team.component';
 import { UCIrankingComponent} from './UCIranking/UCIranking.component';
 import { SortDateComponent} from './sort-date/sort-date.component';
 import { SortNameComponent} from './sort-name/sort-name.component';
+import {LoadingComponent} from '@app/loading/loading.component';
 
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
@@ -49,6 +50,7 @@ import { UserService } from './services/user.service';
 
 import {JwtInterceptor} from './guard/jwt.interceptor';
 import {ErrorInterceptor} from './guard/error.interceptor';
+import {LoadingInterceptorService } from './guard/loading.interceptor';
 
 
 @NgModule({
@@ -68,6 +70,7 @@ import {ErrorInterceptor} from './guard/error.interceptor';
   MatProgressBarModule,
   MatDatepickerModule,
   MatMomentDateModule,
+  MatProgressSpinnerModule,
   ],
   declarations: [ AppComponent, MenuComponent,MenuPersComponent, TopbarComponent, CreateRiderComponent, HomeComponent,
                 RequestListComponent, AllRequestListComponent,
@@ -75,14 +78,15 @@ import {ErrorInterceptor} from './guard/error.interceptor';
                 NationalOneChampComponent, NationalAllChampsComponent,
                 ConfirmEmailComponent,  StartListComponent, RaceComponent,
                 StagesComponent, TeamComponent, UCIrankingComponent,
-                SortDateComponent, SortNameComponent
+                SortDateComponent, SortNameComponent, LoadingComponent
                 ],
   entryComponents: [MenuComponent],
   bootstrap:    [ AppComponent ],
   providers: [
       {provide: APP_BASE_HREF, useValue: '/'},
-      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+      {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+      {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+      {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptorService, multi: true },
       MatMomentDateModule,
   ]
 })
