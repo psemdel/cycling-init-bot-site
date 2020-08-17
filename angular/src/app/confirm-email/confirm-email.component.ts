@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -20,13 +20,13 @@ export class ConfirmEmailComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-       // this.uid = this.route.snapshot.paramMap.get("uid");
-      //  this.token = this.route.snapshot.paramMap.get("token");
+       this.uid = this.route.snapshot.paramMap.get("uid");
+       this.token = this.route.snapshot.paramMap.get("token");
         
-          this.route.paramMap.subscribe(params => {
-              this.uid  = params.get("uid ");
-              this.token  = params.get("token ");
-         });
+      //    this.route.paramMap.subscribe(params => {
+     //         this.uid  = params.get("uid ");
+     //         this.token  = params.get("token ");
+     //    });
          
         
         

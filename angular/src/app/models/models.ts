@@ -11,6 +11,7 @@ export class BotRequest {
     routine: string;
     item_id: string;
     request_text: string;
+    log: string;
     //to be brought to CreateRiderRequest
     nationality: string; 
     name: string;
@@ -36,6 +37,7 @@ export class BotRequest {
     edition_nr: number;
     //team
     UCIcode: string;
+    result_id: string;
     //sort
     prop: number; //property may be protected word
     
@@ -62,4 +64,10 @@ export class User {
     wiki_name: string;
     email: string;
     level: boolean;
+}
+
+export class ResetPass {
+  new_password: string;
+  re_new_password: string;
+  current_password: string;  
 }

@@ -44,6 +44,12 @@ export const nationalities: Nationality[] = [
     {value: 'ROM', viewValue: 'Romania'},
     {value: 'HUN', viewValue: 'Hungary'},
     {value: 'MOC', viewValue: 'Morocco'}, //to check
+    {value: 'ARG', viewValue: 'Argentina'},
+    {value: 'BRA', viewValue: 'Brasil'},
+    {value: 'CUB', viewValue: 'Cuba'},
+    {value: 'CRO', viewValue: 'Croatia'},
+    {value: 'VEN', viewValue: 'Venezuela'},
+    {value: "LTU", viewValue: 'Lithuania'}
   ];
 
 interface Gender {
@@ -68,7 +74,8 @@ export const categories: Category[] = [
     {value: 'womanU', viewValue: 'Woman U23 (not implemented yet)'},   
     {value: 'manJ', viewValue: 'Man juniors (not implemented yet)'},
     {value: 'womanJ', viewValue: 'Woman juniors (not implemented yet)'},  
-    {value: 'all', viewValue: 'All (not implemented yet)'},     
+    {value: 'all', viewValue: 'All (not implemented yet)'},   
+    {value: 'both', viewValue: 'Man and Woman Elite'},     
   ];  
   
 
@@ -111,5 +118,18 @@ export const race_2x_classes: RaceClass[] = [
     {value: "2.2", viewValue: 'UCI 2.2'},
     {value: "UWT.2", viewValue: 'UWT 2'},
     {value: "WWT.2", viewValue: 'WWT 2'},
-
   ];
+  
+export const list_of_routines: string[] = [
+    'create_rider',
+    'import_classification',
+    'national_all_champs',
+    'national_one_champ',
+    'start_list',
+    'race',
+    'stages',
+    'team',
+    'UCIranking',
+    'sort_date',
+    'sort_name'
+]

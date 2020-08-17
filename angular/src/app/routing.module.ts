@@ -19,13 +19,15 @@ import { TeamComponent} from './team/team.component';
 import { UCIrankingComponent} from './UCIranking/UCIranking.component';
 import { SortDateComponent} from './sort-date/sort-date.component';
 import { SortNameComponent} from './sort-name/sort-name.component';
-
+import {ForgottenPassComponent} from '@app/forgotten-pass/forgotten-pass.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import {UserSettingsComponent} from '@app/user-settings/user-settings.component';
 
 import {AuthGuard} from './guard/auth.guard';
 import {AuthGuardStaff} from './guard/authstaff.guard';
 
 const routes: Routes = [
+    { path: 'activate/:uid/:token', component: ConfirmEmailComponent },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent},
 
@@ -45,8 +47,10 @@ const routes: Routes = [
     { path: 'all_request_list', component: AllRequestListComponent, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
-   
-    { path: 'activate/:uid/:token', component: ConfirmEmailComponent },
+    { path: 'forgotten', component:     ForgottenPassComponent },
+    { path: 'user_settings', component:     UserSettingsComponent },
+  
+
    // { path: 'activate', component: ConfirmEmailComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

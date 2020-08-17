@@ -17,6 +17,7 @@ import {MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
@@ -40,6 +41,11 @@ import { UCIrankingComponent} from './UCIranking/UCIranking.component';
 import { SortDateComponent} from './sort-date/sort-date.component';
 import { SortNameComponent} from './sort-name/sort-name.component';
 import {LoadingComponent} from '@app/loading/loading.component';
+import {ForgottenPassComponent} from '@app/forgotten-pass/forgotten-pass.component';
+import {UserSettingsComponent} from '@app/user-settings/user-settings.component';
+import {LogComponent} from '@app/log/log.component';
+import {LogContentComponent} from '@app/logcontent/logcontent.component';
+import {AlertComponent} from '@app/alert/alert.component';
 
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
@@ -71,6 +77,7 @@ import {LoadingInterceptorService } from './guard/loading.interceptor';
   MatDatepickerModule,
   MatMomentDateModule,
   MatProgressSpinnerModule,
+  MatDialogModule,
   ],
   declarations: [ AppComponent, MenuComponent,MenuPersComponent, TopbarComponent, CreateRiderComponent, HomeComponent,
                 RequestListComponent, AllRequestListComponent,
@@ -78,7 +85,9 @@ import {LoadingInterceptorService } from './guard/loading.interceptor';
                 NationalOneChampComponent, NationalAllChampsComponent,
                 ConfirmEmailComponent,  StartListComponent, RaceComponent,
                 StagesComponent, TeamComponent, UCIrankingComponent,
-                SortDateComponent, SortNameComponent, LoadingComponent
+                SortDateComponent, SortNameComponent, LoadingComponent,
+                ForgottenPassComponent, UserSettingsComponent, 
+                LogComponent, LogContentComponent, AlertComponent
                 ],
   entryComponents: [MenuComponent],
   bootstrap:    [ AppComponent ],

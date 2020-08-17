@@ -21,7 +21,11 @@
                 Login
             </button>
             <a mat-button routerLink="/register" color="primary">Register</a>
+            <br/>
+            <a mat-button routerLink="/forgotten" color="primary">Password forgotten?</a>
         </div>
+        
+        
         <div *ngIf="submitted && loggedfail" class="invalid-feedback">      
             False login or password, was your account activated?
         </div>
