@@ -17,6 +17,22 @@
                 </div>
             <br/>
             <div class="form-group">
+              <label for="gender">Man or woman race?<br/>
+              <small> (don't use for U23 or Junior races)</small>
+              </label>
+              <select class="form-control" formControlName="gender"
+              [ngClass]="{ 'is-invalid': submitted && f.gender.errors }">
+                  <option *ngFor="let gender of genders" [value]="gender.value">
+                    {{gender.viewValue}}
+                  </option>
+                </select>
+                <div *ngIf="submitted && f.gender.errors" class="invalid-feedback">
+                    <div *ngIf="f.gender.errors.required">Field required</div>
+               </div>
+    
+            </div>
+            <br>
+            <div class="form-group">
                 <label for="time_of_race">Begin of the race</label>
                 <br>
                     <input matInput [matDatepicker]="picker1" formControlName="time_of_race">
@@ -82,5 +98,6 @@
     </div>
     <div *ngIf="success">
           <h4>You submitted successfully {{lastname}}!</h4>
+          <a mat-button routerLink="/request_list" color="secondary">See progress: my requests</a>
     </div>
 </div>
