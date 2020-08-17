@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BotRequestService} from '@app/services/bot-request.service';
+import { BotRequestService} from '@ser/bot-request.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 import { BotRequest, User} from '@app/models/models';
 import { race_types, nationalities,yesnos,race_1x_classes, race_2x_classes} from '@app/models/lists';
 
@@ -37,6 +38,7 @@ export class RaceComponent implements OnInit {
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
+              private monitoringService: MonitoringService
     ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
    }
@@ -130,6 +132,7 @@ export class RaceComponent implements OnInit {
         data => {
           console.log('creater race request success');
           this.success = true;
+          this.monitoringService.start('race');
         },
         error => {
             console.log(error);

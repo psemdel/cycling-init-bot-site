@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '@env/environment';
+import { BotRequest} from '@app/models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,10 @@ import { environment } from '@env/environment';
 export class BotRequestService {
   private baseUrl = environment.apiUrl +'bot_requests';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+  ) {}
 
-  createRq(routine: string, botrequest: Object): Observable<Object> {
+  createRq(routine: string, botrequest: BotRequest): Observable<Object> {
     return this.http.post(`${this.baseUrl}/create/${routine}/`, botrequest);
   } 
   

@@ -9,6 +9,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, last, map, tap } from 'rxjs/operators';
 
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 import { BotRequest, User, FileUploadModel} from '@app/models/models';
 
 import { environment } from '@env/environment';
@@ -46,6 +47,7 @@ export class UCIrankingComponent implements OnInit {
               private formBuilder: FormBuilder, 
               private authenticationService: AuthenticationService,
               private http: HttpClient,
+              private monitoringService: MonitoringService
   ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
               this.years = Array(40).fill(0).map((x,i)=>1994+i);
@@ -149,6 +151,7 @@ export class UCIrankingComponent implements OnInit {
                         if (typeof (event) === 'object') {
                             console.log("upload successful!")
                             this.success=true;
+                            this.monitoringService.start('UCIranking');
                         }
                   }
             );

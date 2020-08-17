@@ -3,6 +3,7 @@ import { BotRequestService} from '@app/services/bot-request.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 import { BotRequest, User} from '@app/models/models';
 import { nationalities} from '@app/models/lists';
 
@@ -25,9 +26,10 @@ export class TeamComponent implements OnInit {
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
+              private monitoringService: MonitoringService
     ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-              this.years = Array(80).fill(0).map((x,i)=>1950+i);
+              this.years = Array(80).fill(0).map((x,i)=>2030-i);
    }
 
   ngOnInit() {
@@ -76,6 +78,7 @@ export class TeamComponent implements OnInit {
         data => {
           console.log('creater team request success');
           this.success = true;
+          this.monitoringService.start('team');
         },
         error => {
             console.log(error);

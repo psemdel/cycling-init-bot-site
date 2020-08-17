@@ -34,9 +34,8 @@ export class AuthenticationService {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 this.storeJwtToken(user.access);
                 this.storeRefreshToken(user.refresh);
-                localStorage.setItem('currentUser', JSON.stringify(user, this.replacer)); //not ideal as both token as saved at same place
+                localStorage.setItem('currentUser', JSON.stringify(user, this.replacer)); 
                 this.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser')));//user
-                return this.currentUser;
             })); //error catch in error.interceptor
     }
 
@@ -48,10 +47,26 @@ export class AuthenticationService {
         localStorage.removeItem(this.JWT_TOKEN);
         localStorage.removeItem(this.REFRESH_TOKEN);
         this.currentUserSubject.next(null);
+        //monitoring
+        localStorage.removeItem('NB_STARTED_ROUTINES');
+        localStorage.removeItem('NB_COMPLETED_ROUTINES');
+        //localStorage.removeItem('CHECKING');
     }
     
      isLoggedIn() {
          return !!this.getJwtToken();
+     }
+     
+     isAdmin(){
+         if(this.isLoggedIn()){
+             this.currentUser.subscribe(
+             user => {
+                if (user.level){
+                 return true;
+                 }}
+             );
+         }
+         return false;
      }
    
     public getJwtToken() {

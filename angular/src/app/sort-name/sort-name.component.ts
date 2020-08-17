@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BotRequestService} from '@app/services/bot-request.service';
+import { BotRequestService} from '@ser/bot-request.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 import {  BotRequest, User} from '@app/models/models';
 
 interface Property {
@@ -32,6 +33,7 @@ export class SortNameComponent implements OnInit {
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
+              private monitoringService: MonitoringService
     ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
    }
@@ -79,6 +81,7 @@ export class SortNameComponent implements OnInit {
         data => {
           console.log('creater name sorting request success');
           this.success = true;
+          this.monitoringService.start('sort_name');
         },
         error => {
             console.log(error);

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BotRequestService} from '@app/services/bot-request.service';
+import { BotRequestService} from '@ser/bot-request.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 import { BotRequest, User} from '@app/models/models';
 
 @Component({
@@ -23,6 +24,7 @@ export class NationalAllChampsComponent implements OnInit {
   constructor(private botRequestService: BotRequestService,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
+              private monitoringService: MonitoringService
     ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
               this.years = Array(30).fill(0).map((x,i)=>2000+i);
@@ -66,6 +68,7 @@ export class NationalAllChampsComponent implements OnInit {
         data => {
           console.log('national all champs request success');
           this.success = true;
+          this.monitoringService.start('national_all_champs');
         },
         error => {
             console.log(error);

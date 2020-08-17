@@ -3,6 +3,7 @@ import { BotRequestService} from '@ser/bot-request.service';
 import { Observable } from 'rxjs';
 
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 import { BotRequest, User} from '@app/models/models';
 
 @Component({
@@ -26,6 +27,7 @@ export class RequestListComponent implements OnInit {
 
    constructor(private botRequestService: BotRequestService,
                private authenticationService: AuthenticationService,
+               private monitoringService: MonitoringService
    ) {
    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
@@ -70,11 +72,22 @@ export class RequestListComponent implements OnInit {
       
   }
 
+  run(botrequest : BotRequest) {
+    this.botRequestService.runRq(botrequest)
+      .subscribe(
+        data => {
+          console.log(data);
+          botrequest.status="run requested";
+          this.monitoringService.start(botrequest.routine);
+          this.reloadData();
+        },
+        error => console.log(error));
+  }
+
   delete_rq(routine: string, botrequest: BotRequest){
    this.botRequestService.deleteRq(routine,botrequest.id)
       .subscribe(
         data => {
-          console.log(data);
           this.reloadData();
         },
         error => console.log(error));

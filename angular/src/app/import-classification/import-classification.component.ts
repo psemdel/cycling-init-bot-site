@@ -10,6 +10,7 @@ import { catchError, last, map, tap } from 'rxjs/operators';
 
 //import {FileUploadService} from '@ser/file-upload.service';
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 
 import { BotRequest, User, FileUploadModel} from '@app/models/models';
 
@@ -63,6 +64,7 @@ export class ImportClassificationComponent implements OnInit {
               private formBuilder: FormBuilder, 
               private authenticationService: AuthenticationService,
               private http: HttpClient,
+              private monitoringService: MonitoringService
   ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
    }
@@ -163,6 +165,7 @@ export class ImportClassificationComponent implements OnInit {
                         if (typeof (event) === 'object') {
                             console.log("upload successful!")
                             this.success=true;
+                            this.monitoringService.start('import_classification');
                         }
                   }
             );

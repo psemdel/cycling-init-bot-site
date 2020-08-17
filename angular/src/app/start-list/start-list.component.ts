@@ -9,9 +9,10 @@ import { of } from 'rxjs/observable/of';
 import { catchError, last, map, tap } from 'rxjs/operators';
 
 import {AuthenticationService } from '@ser/authentication.service';
+import {MonitoringService } from '@ser/monitoring.service';
 
 import { BotRequest, User,FileUploadModel} from '@app/models/models';
-import { race_types, yesnos} from '@app/models/lists';
+import { race_types, yesnos,  genders} from '@app/models/lists';
 
 import { environment } from '@env/environment';
 
@@ -50,6 +51,7 @@ export class StartListComponent implements OnInit {
   lastname: string;
   yesnos=yesnos;
   race_types=race_types;
+  genders=genders;
   
   botrequest: BotRequest = new BotRequest();
   files: Array<FileUploadModel> = [];
@@ -67,6 +69,7 @@ export class StartListComponent implements OnInit {
               private formBuilder: FormBuilder, 
               private authenticationService: AuthenticationService,
               private http: HttpClient,
+              private monitoringService: MonitoringService
   ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
    }
@@ -79,7 +82,8 @@ export class StartListComponent implements OnInit {
             race_type: [false, Validators.required],
             time_of_race: [{date: {year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate()}}, Validators.required],
             moment: [false],
-            chrono: [true, Validators.required],
+            chrono: [false, Validators.required],
+            gender: ['',Validators.required],
             file: [null, Validators.required]
             });
   }
@@ -173,6 +177,7 @@ export class StartListComponent implements OnInit {
                         if (typeof (event) === 'object') {
                             console.log("upload successful!")
                             this.success=true;
+                            this.monitoringService.start('start_list');
                         }
                   }
             );
