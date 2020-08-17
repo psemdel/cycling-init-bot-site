@@ -4,7 +4,7 @@ from django.http.response import JsonResponse
 from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
-
+from django.conf import settings
 #rest
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
@@ -15,14 +15,19 @@ from rest_framework import generics
 #other
 from ratelimit.decorators import ratelimit
 import json
+from celery import shared_task
 
 #app
 from .serializers import *
 from .models import *
 from .run import run_bot
 from .dic import routine_to_model, routine_to_serializer
+from .log import save_log
 
-RATELIMRQ='200000/h'
+if settings.DEBUG:
+    RATELIMRQ='200000/h'
+else:
+    RATELIMRQ='10/h'
 
 def index(request):
    return HttpResponse("<p>bot_requests index</p>")
@@ -37,6 +42,7 @@ def serial_save(request_serializer, request, rq_data):
     if request_serializer.is_valid():
         rq=request_serializer.save()
         return run_autocheck(rq_data, request, rq.id)
+       # return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
     else:
         print('serializer error: ')
         print(request_serializer.errors)
@@ -62,7 +68,9 @@ def create_rq(request,routine):
             return JsonResponse({'error':'no POST request'}, status=status.HTTP_400_BAD_REQUEST)   
     except:
         return JsonResponse({'status create':'failed'}, status=status.HTTP_417_EXPECTATION_FAILED)    
-            
+
+@ratelimit(key='ip', rate=RATELIMRQ)     
+@api_view(['POST'])       
 def create_file_rq(request,routine):  
      if request.method == 'POST' and request.FILES:
         try:
@@ -75,38 +83,56 @@ def create_file_rq(request,routine):
             rq_data.update(entry_time=timezone.now() ) 
             rq_data.update(routine=routine)
             rq_data.update(result_file_name=name)
-
             request_serializer =serializer(data=rq_data)
             return serial_save(request_serializer, request, rq_data)
         except:
             print("plantage by file")  
             return JsonResponse({'file':'failed'}, status=status.HTTP_400_BAD_REQUEST)    
 
+@shared_task
+def async_run_bot(rq_id, rq_routine):
+    run_bot(rq_id, rq_routine)
+
 def run_autocheck(rq_data, request, rq_id):
+    print("run autocheck")
     user=User.objects.get(pk=rq_data["author"])
     if user.has_perm('bot_requests.can_run_requests'):
-        run_error=run_bot(rq_id,rq_data["routine"])
-        if run_error==0:
-            return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
-        else:
-            return JsonResponse({'error':'bot run not successful'}, status=status.HTTP_417_EXPECTATION_FAILED)        
+        async_run_bot.delay(rq_id,rq_data["routine"])
+        #not required
+        #if run_error==0:
+        return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
+        #else:
+        #    return JsonResponse({'error':'bot run not successful'}, status=status.HTTP_417_EXPECTATION_FAILED)        
     return JsonResponse({'ras':'ras'}, status=status.HTTP_201_CREATED) 
-   
+
+def check_if_failed(rq_id, routine):
+    table=routine_to_model(routine)
+    rq=table.objects.get(pk=rq_id)
+    if rq.status == "failed":
+        return True
+    else:
+        return False
+
 @api_view(['POST'])    
-@permission_classes((IsAdminUser,))
+#@permission_classes((IsAdminUser,))
 def run(request):
     if request.method == 'POST':
         run_data=JSONParser().parse(request)
-            
+        
         if run_data["routine"]:
             if run_data["id"]:
-                run_error=run_bot(run_data["id"],run_data["routine"])
-                if run_error==0:
+                if IsAdminUser or check_if_failed(run_data["id"],run_data["routine"]):
+                    save_log(run_data["id"],run_data["routine"], "running request")
+                    async_run_bot.delay(run_data["id"],run_data["routine"])
                     return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
                 else:
-                    return JsonResponse({'error':'bot run not successful'}, status=status.HTTP_417_EXPECTATION_FAILED)  
+                    return JsonResponse({'error':'no POST request'}, status=status.HTTP_400_BAD_REQUEST)   
+                # if run_error==0:
+                #    return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
+               # else:
+               #     return JsonResponse({'error':'bot run not successful'}, status=status.HTTP_417_EXPECTATION_FAILED)  
             else:
-                return JsonResponse({'error':'no request id defined'}, status=status.HTTP_400_BAD_REQUEST)  
+                return JsonResponse({'error':'not authorized'}, status=status.HTTP_401_UNAUTHORIZED)  
         else:
             return JsonResponse({'error':'no routine defined'}, status=status.HTTP_400_BAD_REQUEST)  
     else:

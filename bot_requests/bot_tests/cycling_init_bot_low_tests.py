@@ -8,11 +8,14 @@ Created on Sun Feb 16 21:16:31 2020
 
 import pywikibot
 import unittest
-from bot_requests.src.cycling_init_bot_low import (search_race, is_it_a_cyclist, search_item,
+import os
+import csv
+from src.cycling_init_bot_low import (search_race, is_it_a_cyclist, search_item,
 search_rider, define_article, get_class, get_present_team, CIOtoIDsearch,
-get_class_WWT, get_country, table_reader, compare_dates, get_year)
-from bot_requests.src import race_list
-from bot_requests.src import nation_team_table
+get_class_WWT, get_country, table_reader, compare_dates, get_year, checkid,
+checkprop, get_single_or_stage,excel_to_csv,bot_or_site)
+from src import race_list
+from src import nation_team_table
 
 site = pywikibot.Site("wikidata", "wikidata")
 repo = site.data_repository()
@@ -76,7 +79,21 @@ class TestSearch(unittest.TestCase):
     def test_get_present_team(self):
         this_date1=pywikibot.WbTime(site=site,year=2009, month=12, day=31, precision='day')    
         self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q604919")
- 
+        this_date1=pywikibot.WbTime(site=site,year=2009, month=1, day=1, precision='day')    
+        self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q604919")
+        this_date1=pywikibot.WbTime(site=site,year=2010, month=12, day=31, precision='day')    
+        self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q1")
+        this_date1=pywikibot.WbTime(site=site,year=2012, month=1, day=1, precision='day')    
+        self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q17011604")
+        this_date1=pywikibot.WbTime(site=site,year=2015, month=1, day=1, precision='day')    
+        self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q1886678")
+        this_date1=pywikibot.WbTime(site=site,year=2017, month=1, day=1, precision='day')    
+        self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q2651858")
+        this_date1=pywikibot.WbTime(site=site,year=2018, month=1, day=1, precision='day')    
+        self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q2651858")
+        this_date1=pywikibot.WbTime(site=site,year=2019, month=1, day=1, precision='day')    
+        self.assertEqual(get_present_team(pywikibot, site, repo, "Q563737", this_date1), "Q2651858")
+        
     def test_CIOtoIDsearch(self):
         team_table=nation_team_table.load()
         self.assertEqual(CIOtoIDsearch(team_table, "FRA") , 142)
@@ -113,6 +130,48 @@ class TestSearch(unittest.TestCase):
    
         result_table, row_count, ecart= table_reader('champ',result_dic, 0, False)
         self.assertTrue(row_count>0)
-          
+
+    def test_checkprop(self):
+        self.assertEqual(checkprop("P5"),"P5")
+        self.assertEqual(checkprop("5"),"P5")
+        self.assertEqual(checkprop(5),"P5")
+
+    def test_checkid(self):
+        self.assertEqual(checkid("Q5"),"Q5")
+        self.assertEqual(checkid("5"),"Q5")
+        self.assertEqual(checkid(5),"Q5")
+
+    def test_get_single_or_stage(self):
+        self.assertEqual(get_single_or_stage("1.1"),True)
+        self.assertEqual(get_single_or_stage("2.1"),False)
+        self.assertEqual(get_single_or_stage(21),True) 
+        self.assertEqual(get_single_or_stage("abc"),True)
+ 
+    def test_excel_to_csv(self):
+        filepath="tests/Conversion_test.xlsx"
+        destination="tests/Conversion_test.csv"
+        res=excel_to_csv(filepath, destination)
+        self.assertEqual(res,destination)
+        
+        filepath=res
+        default_separator=";"
+        kk=1
+        
+        with open(filepath, newline='') as csvfile:
+            file_object = csv.reader(csvfile, delimiter=default_separator, quotechar='|')
+            for row in file_object: 
+                if kk==1:
+                    self.assertEqual(row[0],'Rank')
+                    self.assertEqual(row[1],'BIB')
+                    self.assertEqual(row[2],'Last Name')
+                elif kk==2:
+                    self.assertEqual(row[0],'1.0')
+                    self.assertEqual(row[1],'21.0')
+                    self.assertEqual(row[2],'GUNNEWIJK')
+                kk=kk+1
+
+    def test_bot_or_site(self):
+        self.assertEqual(bot_or_site(),True)  
+              
 if __name__ == '__main__':
     unittest.main()

@@ -7,7 +7,7 @@ Created on Mon Feb 17 20:52:19 2020
 """
 import pywikibot
 import unittest
-from bot_requests.src.get_rider_tricot import f
+from src.get_rider_tricot import f
 
 site = pywikibot.Site("wikidata", "wikidata")
 repo = site.data_repository()

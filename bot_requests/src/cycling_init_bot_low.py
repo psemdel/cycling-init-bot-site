@@ -20,7 +20,7 @@ import os.path
 
 # ==Low level function ==
 def checkprop(property_nummer):
-    if property_nummer[0]=="P":
+    if type(property_nummer)==str and property_nummer[0]=="P":
         prop=property_nummer
     else:
         prop=u'P' + str(property_nummer)
@@ -238,10 +238,10 @@ def link_year(pywikibot, site,repo, present_id,arg1,arg2):
                 suffix1='next'
             item = pywikibot.ItemPage(repo, present_id)
             item.get()
-            add_value(pywikibot, repo, item, p1, id_other, u'link '+suffix1)
+            add_Qvalue(pywikibot, repo, item, p1, id_other, u'link '+suffix1)
             item_other = pywikibot.ItemPage(repo, id_other)
             item_other.get()
-            add_value(pywikibot, repo, item_other, p2, present_id, u'link '+suffix2)
+            add_Qvalue(pywikibot, repo, item_other, p2, present_id, u'link '+suffix2)
         kk=kk+2
 
 def create_present(pywikibot, site,repo,time, label):   
@@ -277,6 +277,17 @@ def get_year(pywikibot, repo, present_id):
 
 # ==Table reader ==
 
+def float_to_int(a):
+    a=a.replace(",",".")
+    a=a.replace(".0","")
+  #  a=a.replace("'","")
+   # a=a.replace('"',"")
+    return int(a)
+
+def clean_txt(a):
+  #  a=a.replace('"',"")
+    return a
+
 #convert the time in seconds
 def time_converter(this_input):
     ecart=False
@@ -292,31 +303,41 @@ def time_converter(this_input):
         timesplit = this_input.split(":")
         
         if len(timesplit) == 3:
-            thistime= int(timesplit[0]) * 3600 + int(timesplit[1]) * 60 + int(timesplit[2])
+            thistime= float_to_int(timesplit[0]) * 3600 + float_to_int(timesplit[1]) * 60 + float_to_int(timesplit[2])
         elif len(timesplit) == 2:
-            thistime= int(timesplit[0]) * 60 + int(timesplit[1])
+            thistime= float_to_int(timesplit[0]) * 60 + float_to_int(timesplit[1])
         else:
-            thistime= int(timesplit[0])
+            thistime= float_to_int(timesplit[0])
 
         if thistime < 120: #suspicious
             ecart=True
         return thistime, ecart
 
 
+def bot_or_site():
+    if 'bot_requests' in os.listdir():
+        return False #site
+    else:
+        return True #bot
+
 def excel_to_csv(filepath, destination):
     wb = xlrd.open_workbook(filepath)
     sh = wb.sheet_by_name('Results')
     destination_file = open(destination, 'w')
-    wr = csv.writer(destination_file, quoting=csv.QUOTE_ALL)
+    wr = csv.writer(destination_file, delimiter=";", quoting=csv.QUOTE_NONE)
 
     for rownum in range(sh.nrows):
         wr.writerow(sh.row_values(rownum))
 
     destination_file.close()
+    return destination
         
 def table_reader(filename,result_dic, startline, verbose):
     default_separator=';'
-        
+     
+    bot=bot_or_site() 
+    
+    clean_txt_bool=False
     #differentiate local from remote
     if filename[(len(filename)-3):]=='csv' or filename[(len(filename)-4):]=='xlsx':
         if filename[(len(filename)-3):]=='csv':
@@ -324,22 +345,34 @@ def table_reader(filename,result_dic, startline, verbose):
         else:
             filepathcsv=None
             filepathxlsx='uploads/'+filename
+ 
     elif filename=="champ":
-        filepath="src/input/champ.csv"
-   # else:
-    #filepathcsv='src/input/'+filename+'.csv'
-   # filepathxlsx='src/input/'+filename+'.xlsx'
-        
+        if bot:
+            filepathcsv="src/input/champ.csv"
+        else:
+            filepathcsv="bot_requests/src/input/champ.csv"
+    elif bot: #by site not allowed other type
+        filepathcsv='src/input/'+filename+'.csv'
+        filepathxlsx='src/input/'+filename+'.xlsx'    
+    
     if (filepathcsv is not None) and os.path.isfile(filepathcsv):
         filepath=filepathcsv
     elif os.path.isfile(filepathxlsx):
-        filepath=excel_to_csv(filepathxlsx)
+        filename=filename[:(len(filename)-5)] #excel
+        if bot:
+            destination='src/input/'+filename+'.csv'
+        else:
+            destination='uploads/'+filename+'.csv'
+        print(destination)
+        filepath=excel_to_csv(filepathxlsx,destination)
+        clean_txt_bool=True
     else:
         print('no file found')
         return 0
     
+    verbose=True
     if verbose:
-        print(filepath)
+        print("corrected file path: " + filepath)
     
     with open(filepath, newline='') as csvfile:
         file_object = csv.reader(csvfile, delimiter=default_separator, quotechar='|')
@@ -377,10 +410,13 @@ def table_reader(filename,result_dic, startline, verbose):
         file_object = csv.reader(csvfile, delimiter=separator, quotechar='|')
 
         for row in file_object:
+            print(row)
             if kk == startline:
                 if verbose:
                     print(row)  #allow to see if there is no problem with the separator
                 for jj in range(len(row)):
+                    if clean_txt_bool:
+                        row[jj]=clean_txt(row[jj])
                     column=row[jj].lower()
                     if column in result_dic:
                         result_dic[column][0]=jj
@@ -392,17 +428,19 @@ def table_reader(filename,result_dic, startline, verbose):
                             if row[dic_content[0]]=='':
                                 result_table[kk-1][dic_content[1]]=0
                             else:
-                                result_table[kk-1][dic_content[1]]=int(row[dic_content[0]])
+                                result_table[kk-1][dic_content[1]]=float_to_int(row[dic_content[0]])
                         else:
                             if dic_content[2]=='time':
                                 result_table[kk-1][dic_content[1]], ecart=time_converter(row[dic_content[0]])
                                 if kk==startline+2:
                                     ecart_global=ecart
                             elif  dic_content[2]=='points':
-                                result_table[kk-1][dic_content[1]]=int(row[dic_content[0]].replace(",","."))
-    
+                                result_table[kk-1][dic_content[1]]=float_to_int(row[dic_content[0]])
                             else:
-                                result_table[kk-1][dic_content[1]]=row[dic_content[0]]
+                                if clean_txt_bool:
+                                    result_table[kk-1][dic_content[1]]=clean_txt(row[dic_content[0]])
+                                else:
+                                    result_table[kk-1][dic_content[1]]=row[dic_content[0]]
             kk = kk + 1
     if verbose:
         print('table read')
@@ -411,7 +449,8 @@ def table_reader(filename,result_dic, startline, verbose):
 #create a list of cyclist objects from result_table
 def cyclists_table_reader(pywikibot, site, repo, result_table,result_dic, **kwargs):
     list_of_cyclists = []
-    
+    all_riders_found=True
+
     #check if all riders are already present
     for ii in range(len(result_table)):
         if (result_table[ii][result_dic['name'][1]]!=0 or result_table[ii][result_dic['first name'][1]]!=0):
@@ -430,14 +469,18 @@ def cyclists_table_reader(pywikibot, site, repo, result_table,result_dic, **kwar
                this_rider.dossard=result_table[ii][result_dic['bib'][1]]
                this_rider.rank=result_table[ii][result_dic['rank'][1]]
            else:
+               all_riders_found=False
                print(str(result_table[ii][result_dic['name'][1]]) + " " + 
                      str(result_table[ii][result_dic['last name'][1]]) + " " + 
                      str(result_table[ii][result_dic['bib'][1]]) + " not found")
                this_rider=Cyclist(ii, 'not found', id_rider)
            list_of_cyclists.append(this_rider)
 
-    print('list of cyclists created')
-    return list_of_cyclists
+    if all_riders_found: 
+        print('list of cyclists created')
+    else:
+        print('reading of list of cyclists: failure not all riders found')
+    return list_of_cyclists, all_riders_found
 
 # ==Search ==
 def search_race(name, race_table,race_dic):
@@ -604,6 +647,13 @@ def get_class_WWT(classe):
     else:
         return UCI, 0, 0    
 
+def get_single_or_stage(classe):    
+    #single=true
+    if type(classe)==str:
+        if classe[0]=="2":
+            return False
+    return True
+
 def get_country(pywikibot, repo, item_id):
     item = pywikibot.ItemPage(repo, item_id)
     item.get()
@@ -753,7 +803,7 @@ def get_present_team(pywikibot, site, repo, id_rider, time_of_race):
                 end_time = pywikibot.WbTime(
                     site=site, year=2100, month=1, day=1, precision='day')
             
-            if (compare_dates(begin_time,time_of_race) == 2 or compare_dates(begin_time,time_of_race) == 0) and (compare_dates(end_time,time_of_race) == 1 or compare_dates(begin_time,time_of_race) == 0):
+            if (compare_dates(begin_time,time_of_race) == 2 or compare_dates(begin_time,time_of_race) == 0) and (compare_dates(end_time,time_of_race) == 1 or compare_dates(end_time,time_of_race) == 0):
                 result = this_team.getTarget().getID()
                 break
     return result

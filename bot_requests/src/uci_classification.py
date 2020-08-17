@@ -5,11 +5,8 @@ Created on Thu Nov  7 21:44:28 2019
 
 @author: maxime
 """
-import csv
-import numpy as np
-import os
 from .cycling_init_bot_low import (cyclists_table_reader, table_reader, search_team_by_code)
-
+from .bot_log import Log
 
 def UCI_classification_importer(
         pywikibot,
@@ -41,7 +38,8 @@ def UCI_classification_importer(
         if result_table[ii][result_dic['points'][1]]==0:
             result_table[ii][result_dic['points'][1]]=result_table[ii][result_dic['result'][1]]
     
-    print('result_table created')
+    log=Log()
+    log.concat('result_table created')
     list_of_cyclists=cyclists_table_reader(pywikibot, site, repo, result_table,result_dic)
 
     #fill the rider
@@ -59,7 +57,7 @@ def UCI_classification_importer(
                          for in_comprend in list_of_comprend:
                             if in_comprend.getTarget() == item_to_add:  # Already there
                                 Addc = False
-                                print('Item already in the Master list')
+                                log.concat('Item already in the Master list')
                          if Addc:
                             #add the calendar to P1344
                             claim = pywikibot.Claim(repo, u'P1344')
@@ -96,7 +94,7 @@ def UCI_classification_importer(
                                 for in_comprend in list_of_comprend:
                                     if in_comprend.getTarget() == item_to_add:  # Already there
                                         Addc = False
-                                        print('Item already in the Master list')
+                                        log.concat('Item already in the Master list')
             
                                 if Addc:
                                    claim = pywikibot.Claim(repo, u'P3494')
@@ -116,5 +114,5 @@ def UCI_classification_importer(
                                                                            site=repo)
                                    qualifier_points.setTarget(target_qualifier)
                                    claim.addQualifier(qualifier_points)
-
+        return 0, log
         

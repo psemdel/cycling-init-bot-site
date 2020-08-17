@@ -8,7 +8,7 @@ Created on Sun Feb 16 20:10:48 2020
 
 import pywikibot
 import unittest
-from bot_requests.src.moo import (concaten, ThisName, Cyclist, Race, Team)
+from src.moo import (concaten, ThisName, Cyclist, Race, Team)
 
 site = pywikibot.Site("wikidata", "wikidata")
 repo = site.data_repository()
