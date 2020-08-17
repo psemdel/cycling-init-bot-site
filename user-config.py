@@ -199,9 +199,9 @@ step = -1
 # Maximum number of times to retry an API request before quitting.
 max_retries = 15
 # Minimum time to wait before resubmitting a failed API request.
-retry_wait = 5
+retry_wait = 30
 # Maximum time to wait before resubmitting a failed API request.
-retry_max = 120
+retry_max = 300
 
 # ############# TABLE CONVERSION BOT SETTINGS ##############
 

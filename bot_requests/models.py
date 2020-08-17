@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.conf import settings
 
 class BotRequest(models.Model):
@@ -7,15 +6,16 @@ class BotRequest(models.Model):
     entry_time=models.DateTimeField(null=False,blank=False)
     process_start_time=models.DateTimeField(null=True, blank=True)
     process_end_time=models.DateTimeField(null=True, blank=True)
-    status=models.CharField(max_length=70, null=False,blank=False, default='pending')
-    routine = models.CharField(max_length=100,null=False, blank=False)
-    item_id= models.CharField(max_length=70, null=False, blank=False)
+    status=models.CharField(max_length=70, blank=False, default='pending')
+    routine = models.CharField(max_length=100,blank=False)
+    item_id= models.CharField(max_length=70, blank=False)
+    log=models.TextField(blank=True)
 
     class Meta:
         abstract = True
 
 class BotRequestWithFile(BotRequest):
-    result_file_name = models.CharField(max_length=100,null=False, blank=False)
+    result_file_name = models.CharField(max_length=100, blank=False)
     
     class Meta:
         abstract = True
@@ -57,6 +57,7 @@ class StartListRequest(BotRequestWithFile):
    race_type= models.BooleanField(blank=False)
    chrono= models.BooleanField(blank=False)
    moment= models.BooleanField(blank=False)
+   gender =models.CharField(max_length=5, blank=True)#for champ
      
    def __str__(self):
         return self.routine + " "+ self.item_id
@@ -68,7 +69,7 @@ class UCIrankingRequest(BotRequestWithFile):
         return self.routine + " "+ self.item_id
 
 class RaceRequest(BotRequest):
-   name = models.CharField(max_length=20, blank=False,default="race")
+   name = models.CharField(max_length=100, blank=False,default="race")
     
    time_of_race=models.DateTimeField(null=False,blank=False)
    end_of_race=models.DateTimeField(null=True,blank=True)
@@ -93,11 +94,12 @@ class StagesRequest(BotRequest):
         return self.routine + " "+ self.item_id
     
 class TeamRequest(BotRequest):
-   name = models.CharField(max_length=20, blank=False,default="team")
+   name = models.CharField(max_length=100, blank=False,default="team")
     
    year = models.IntegerField(blank=False)
    nationality = models.CharField(max_length=3, blank=True)
    UCIcode = models.CharField(max_length=3, blank=True)
+   result_id=models.CharField(max_length=30, blank=True)
     
    def __str__(self):
         return self.routine + " "+ self.name  

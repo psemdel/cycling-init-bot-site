@@ -34,4 +34,8 @@ class Command(BaseCommand):
             )
         
         autocheck_group.permissions.add(permission_run)
-        print("Created default group and permissions.")
+        print("Created auto check.")
+
+        new_user_group, created = Group.objects.get_or_create(name='new_user')
+        new_user_group.permissions.add(permission_request)
+        print("Created new users.")
