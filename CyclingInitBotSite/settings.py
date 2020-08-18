@@ -141,6 +141,7 @@ SIMPLE_JWT = {
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': False,
     'ACTIVATION_URL': '/activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': '/password-reset/{uid}/{token}',
     'SERIALIZERS': {
          'user_create': 'users.serializers.UserSerializer'
     }
@@ -154,7 +155,7 @@ if DEBUG:
     DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'pgcyclingdb',
+         'NAME': 'pgcyclingdb', #pgcyclingdb
          'USER': 'psemdel',
          'PASSWORD': DB_SECRET_KEY,
          'HOST': 'localhost',
@@ -211,6 +212,19 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+# CELERY
+if DEBUG:
+    CELERY_BROKER_URL = 'pyamqp://guest@localhost//'
+else:
+    CELERY_BROKER_URL =os.environ.get('CLOUDAMQP_URL')
+    CELERY_BROKER_POOL_LIMIT= 1
+
+#CELERY_RESULT_BACKEND = 'pyamqp://guest@localhost//'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 #heroku config:set DJANGO_STATIC_HOST=https://d4663kmspf1sqa.cloudfront.net
@@ -221,5 +235,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = DJANGO_STATIC_HOST + '/uploads/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
 
 django_heroku.settings(locals())

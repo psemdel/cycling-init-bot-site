@@ -10,6 +10,7 @@ xlrd
 django-ratelimit
 django-cors-headers
 dj_database_url
+Celery
 
 ####pywikibot
 
