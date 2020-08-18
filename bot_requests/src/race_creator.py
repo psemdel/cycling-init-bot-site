@@ -7,7 +7,7 @@ Created on Thu Jan  4 15:29:49 2018
 from .cycling_init_bot_low import (add_Qvalue, add_date, add_value, CIOtoIDsearch,
  get_country, get_class_WWT, define_article, create_present, link_year, 
  add_multiple_value, get_description, get_class_id, get_race_begin, get_end_date,
- get_class, get_year
+ get_class, get_year, date_finder
  )
                                    
 from .calendar_list import calendaruciID, calendarWWTID, calendarUWTID
@@ -61,38 +61,7 @@ def f(pywikibot,site,repo,time,team_table_femmes,race_name,
         add_Qvalue(pywikibot,repo,item,"P17",country_code,u'country')
         add_value(pywikibot,repo,item,"P1545",str(number),u'order')
         #race_begin later
-    
-    def date_finder(pywikibot,repo,site,number,first_stage,last_stage, race_begin,
-                    race_end):
-        
-        days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-        output_date=race_begin
-        if number==last_stage:
-             output_date=race_end
-        elif number!=first_stage:
-             output_date=race_begin
-             day_begin=race_begin.day
-             month_begin=race_begin.month
-             year_begin=race_begin.year
-    
-             print(race_begin.day)
-             print(number)
-             print(first_stage)
-             day_temp=day_begin+(number-first_stage)
-             print(day_temp)
-
-             if day_temp>days_in_month[month_begin]:
-                 day_temp=day_temp-days_in_month[month_begin]
-                 month_temp=month_begin+1
-                 if month_temp>12:
-                     output_date.year=year_begin+1
-                     output_date.month=month_temp-12
-                 else:
-                     output_date.month=month_temp
-             output_date.day=day_temp
-    
-        return output_date
-    
+   
     def stage_label(number, genre,race_name, year):
         mylabel={}
     

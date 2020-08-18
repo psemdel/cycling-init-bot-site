@@ -275,6 +275,39 @@ def get_year(pywikibot, repo, present_id):
 
     return int(this_date.year)
 
+def date_duplicate(pywikibot, date_input):
+    return pywikibot.WbTime.fromTimestr(date_input.toTimestr(),precision="day")
+    
+#function for race
+#determine the date of a stage
+def date_finder(pywikibot, number,first_stage,last_stage, race_begin,
+                race_end):
+    
+    days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    if number==last_stage:
+         return date_duplicate(pywikibot,race_end)
+    elif number<=first_stage:
+         return date_duplicate(pywikibot, race_begin)
+    elif number!=first_stage:
+         output_date=date_duplicate(pywikibot, race_begin)
+         day_begin=race_begin.day
+         month_begin=race_begin.month
+         year_begin=race_begin.year
+
+         day_temp=day_begin+(number-first_stage)
+
+         if day_temp>days_in_month[month_begin]:
+             day_temp=day_temp-days_in_month[month_begin]
+             month_temp=month_begin+1
+             if month_temp>12:
+                 output_date.year=year_begin+1
+                 output_date.month=month_temp-12
+             else:
+                 output_date.month=month_temp
+         output_date.day=day_temp
+         return output_date
+
 # ==Table reader ==
 
 def float_to_int(a):
