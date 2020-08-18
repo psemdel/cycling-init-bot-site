@@ -42,6 +42,7 @@ class CreateRiderRequest(BotRequest):
     nationality = models.CharField(max_length=3, blank=True)
     name = models.CharField(max_length=70, blank=True)
     gender =models.CharField(max_length=5, blank=True)   
+    result_id=models.CharField(max_length=30, blank=True)
     
     def __str__(self):
         return self.routine + " "+ self.name   
@@ -74,6 +75,7 @@ class RaceRequest(BotRequest):
    time_of_race=models.DateTimeField(null=False,blank=False)
    end_of_race=models.DateTimeField(null=True,blank=True)
    nationality = models.CharField(max_length=3, blank=True)
+   result_id=models.CharField(max_length=30, blank=True)
    
    race_type= models.BooleanField(blank=False)
    race_class = models.CharField(max_length=20, blank=True)

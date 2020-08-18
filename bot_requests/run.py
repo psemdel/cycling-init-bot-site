@@ -38,8 +38,11 @@ def run_bot(rq_id, rq_routine):
             from bot_requests.src import rider_fast_init
 
             if not test_site:
-                status, log=rider_fast_init.f(pywikibot,site,repo,time,nation_table, rq.name,rq.nationality,
+                status, log, result_id=rider_fast_init.f(pywikibot,site,repo,time,nation_table, rq.name,rq.nationality,
                                   rq.gender)
+                rq.result_id=result_id
+                rq.save()
+        
         elif rq_routine=="import_classification":
              from bot_requests.src import classification_importer
              id_race=rq.item_id
@@ -65,7 +68,7 @@ def run_bot(rq_id, rq_routine):
                    first_stage=1 
                 
                 if not test_site:
-                    status, log=race_creator.f(pywikibot,site,repo,time,
+                    status, log, result_id=race_creator.f(pywikibot,site,repo,time,
                                   nation_table,
                                   rq.name,
                                   single_race,
@@ -83,7 +86,7 @@ def run_bot(rq_id, rq_routine):
                 single_race=True
                 
                 if not test_site:
-                    status, log=race_creator.f(pywikibot,site,repo,time,
+                    status, log, result_id=race_creator.f(pywikibot,site,repo,time,
                                   nation_table,
                                   rq.name,
                                   single_race,
@@ -93,6 +96,8 @@ def run_bot(rq_id, rq_routine):
                                   classe=rq.race_class,
                                   edition_nr=rq.edition_nr,
                                   )
+            rq.result_id=result_id
+            rq.save()
                     
         elif rq_routine=="stages":
             from bot_requests.src import race_creator

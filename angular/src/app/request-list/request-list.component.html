@@ -4,12 +4,13 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Name</th><th>Status</th><th colspan="2">Actions</th>
+            <th>Name</th><th>Status</th><th>Result id</th><th colspan="2">Actions</th>
         </tr>
         </thead>
         <tr *ngFor="let botrequest of create_rider_botrequests  | async">
             <td>{{botrequest.name}}</td>
             <td>{{botrequest.status}}<log [txt]="botrequest.log"></log></td>
+            <td>{{botrequest.result_id}}</td>
             <td>
             <button mat-raised-button color="warn" type="button" (click)='delete_rq("create_rider", botrequest)'>
                 <mat-icon>clear</mat-icon>
@@ -117,12 +118,13 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Name</th><th>Status</th><th colspan="2">Actions</th>
+            <th>Name</th><th>Status</th><th>Result id</th><th colspan="2">Actions</th>
         </tr>
         </thead>
         <tr *ngFor="let botrequest of race_botrequests | async">
             <td>{{botrequest.name}}</td>
             <td>{{botrequest.status}}<log [txt]="botrequest.log"></log></td>
+            <td>{{botrequest.result_id}}</td>
             <td>
             <button mat-raised-button color="warn" type="button" (click)='delete_rq("race",botrequest)'>
                 <mat-icon>clear</mat-icon>
