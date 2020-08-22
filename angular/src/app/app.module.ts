@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RoutingModule } from './routing.module';
+import { RoutingModule } from '@app/routing.module';
 import {MatSelectModule} from '@angular/material/select';
 import { APP_BASE_HREF } from '@angular/common';
 
@@ -19,27 +19,27 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialogModule } from '@angular/material/dialog';
 
-import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
-import { MenuPersComponent } from './menupers/menupers.component';
+import { AppComponent } from '@app/app.component';
+import { MenuComponent } from '@app/menu/menu.component';
+import { MenuPersComponent } from '@app/menupers/menupers.component';
 
-import { TopbarComponent } from './topbar/topbar.component';
-import { CreateRiderComponent } from './create-rider/create-rider.component';
-import { RequestListComponent } from './request-list/request-list.component';
-import { AllRequestListComponent } from './all-request-list/all-request-list.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent} from './login/login.component';
-import { RegisterComponent} from './register/register.component';
+import { TopbarComponent } from '@app/topbar/topbar.component';
+import { CreateRiderComponent } from '@app/create-rider/create-rider.component';
+import { RequestListComponent } from '@app/request-list/request-list.component';
+import { AllRequestListComponent } from '@app/all-request-list/all-request-list.component';
+import { HomeComponent } from '@app/home/home.component';
+import { LoginComponent} from '@app/login/login.component';
+import { RegisterComponent} from '@app/register/register.component';
 import { ImportClassificationComponent } from './import-classification/import-classification.component';
-import { NationalOneChampComponent} from './national-one-champ/national-one-champ.component';
-import { NationalAllChampsComponent} from './national-all-champs/national-all-champs.component';
-import { StartListComponent} from './start-list/start-list.component';
-import { StagesComponent} from './stages/stages.component';
-import { RaceComponent} from './race/race.component';
-import { TeamComponent} from './team/team.component';
-import { UCIrankingComponent} from './UCIranking/UCIranking.component';
-import { SortDateComponent} from './sort-date/sort-date.component';
-import { SortNameComponent} from './sort-name/sort-name.component';
+import { NationalOneChampComponent} from '@app/national-one-champ/national-one-champ.component';
+import { NationalAllChampsComponent} from '@app/national-all-champs/national-all-champs.component';
+import { StartListComponent} from '@app/start-list/start-list.component';
+import { StagesComponent} from '@app/stages/stages.component';
+import { RaceComponent} from '@app/race/race.component';
+import { TeamComponent} from '@app/team/team.component';
+import { UCIrankingComponent} from '@app/UCIranking/UCIranking.component';
+import { SortDateComponent} from '@app/sort-date/sort-date.component';
+import { SortNameComponent} from '@app/sort-name/sort-name.component';
 import {LoadingComponent} from '@app/loading/loading.component';
 import {ForgottenPassComponent} from '@app/forgotten-pass/forgotten-pass.component';
 import {UserSettingsComponent} from '@app/user-settings/user-settings.component';
@@ -48,11 +48,6 @@ import {LogContentComponent} from '@app/logcontent/logcontent.component';
 import {AlertComponent} from '@app/alert/alert.component';
 
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
-
-
-import { BotRequestService } from './services/bot-request.service';
-import { AuthenticationService } from './services/authentication.service';
-import { UserService } from './services/user.service';
 
 import {JwtInterceptor} from './guard/jwt.interceptor';
 import {ErrorInterceptor} from './guard/error.interceptor';
@@ -87,9 +82,8 @@ import {LoadingInterceptorService } from './guard/loading.interceptor';
                 StagesComponent, TeamComponent, UCIrankingComponent,
                 SortDateComponent, SortNameComponent, LoadingComponent,
                 ForgottenPassComponent, UserSettingsComponent, 
-                LogComponent, LogContentComponent, AlertComponent
+                LogComponent, LogContentComponent, AlertComponent, MenuComponent
                 ],
-  entryComponents: [MenuComponent],
   bootstrap:    [ AppComponent ],
   providers: [
       {provide: APP_BASE_HREF, useValue: '/'},

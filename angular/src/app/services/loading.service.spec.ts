@@ -1,28 +1,32 @@
-import { TestBed } from '@angular/core/testing';
-
-//import { Injectable } from '@angular/core';
-//import { Subject } from 'rxjs';
-import {LoadingService} from './loading.service';
+import { TestBed, inject, fakeAsync, flush, async } from '@angular/core/testing';
+import {LoadingService} from '@ser/loading.service';
 
 describe('Loading service', () => {
-    beforeEach(
+    let service: LoadingService;
+
+    beforeEach(() => {
         TestBed.configureTestingModule({ providers: [LoadingService]});
-        service = TestBed.inject(LoadingService);
-      );
+        service = new LoadingService();
+      });
     
-    it('initial value', () =>{
-        expect(service.loading$).toBe(true);
-    });
-    
-    it('start loading'), () => {
+    it('start loading',  (done) =>{
+        service.loading$.subscribe(
+        data=> {
+            expect(data).toBeTrue();
+            done();
+        })
         service.startLoading();
-        expect(service.loading$).toBe(true);
     });
     
-    it('stop loading'), () => {
+    it('stop loading',  (done) =>{
+        service.loading$.subscribe(
+        data=> {
+            expect(data).toBeFalse();
+            done();
+        })
         service.stopLoading();
-        expect(service.loading$).toBe(false);
-    });   
+    });  
     
-    }
+    
+    });
          

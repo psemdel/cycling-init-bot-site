@@ -2,31 +2,31 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CreateRiderComponent } from './create-rider/create-rider.component';
-import {HomeComponent} from './home/home.component';
-import { AppComponent } from './app.component';
-import { RequestListComponent } from './request-list/request-list.component';
-import { AllRequestListComponent } from './all-request-list/all-request-list.component';
-import { LoginComponent} from './login/login.component';
-import { RegisterComponent} from './register/register.component';
-import { ImportClassificationComponent } from './import-classification/import-classification.component';
-import { NationalOneChampComponent} from './national-one-champ/national-one-champ.component';
-import { NationalAllChampsComponent} from './national-all-champs/national-all-champs.component';
-import { StartListComponent} from './start-list/start-list.component';
-import { StagesComponent} from './stages/stages.component';
-import { RaceComponent} from './race/race.component';
-import { TeamComponent} from './team/team.component';
-import { UCIrankingComponent} from './UCIranking/UCIranking.component';
-import { SortDateComponent} from './sort-date/sort-date.component';
-import { SortNameComponent} from './sort-name/sort-name.component';
+import { CreateRiderComponent } from '@app/create-rider/create-rider.component';
+import {HomeComponent} from '@app/home/home.component';
+import { AppComponent } from '@app/app.component';
+import { RequestListComponent } from '@app/request-list/request-list.component';
+import { AllRequestListComponent } from '@app/all-request-list/all-request-list.component';
+import { LoginComponent} from '@app/login/login.component';
+import { RegisterComponent} from '@app/register/register.component';
+import { ImportClassificationComponent } from '@app/import-classification/import-classification.component';
+import { NationalOneChampComponent} from '@app/national-one-champ/national-one-champ.component';
+import { NationalAllChampsComponent} from '@app/national-all-champs/national-all-champs.component';
+import { StartListComponent} from '@app/start-list/start-list.component';
+import { StagesComponent} from '@app/stages/stages.component';
+import { RaceComponent} from '@app/race/race.component';
+import { TeamComponent} from '@app/team/team.component';
+import { UCIrankingComponent} from '@app/UCIranking/UCIranking.component';
+import { SortDateComponent} from '@app/sort-date/sort-date.component';
+import { SortNameComponent} from '@app/sort-name/sort-name.component';
 import {ForgottenPassComponent} from '@app/forgotten-pass/forgotten-pass.component';
-import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { ConfirmEmailComponent } from 'app/confirm-email/confirm-email.component';
 import {UserSettingsComponent} from '@app/user-settings/user-settings.component';
 
 import {AuthGuard} from './guard/auth.guard';
 import {AuthGuardStaff} from './guard/authstaff.guard';
 
-const routes: Routes = [
+export const routes: Routes = [
     { path: 'activate/:uid/:token', component: ConfirmEmailComponent },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent},

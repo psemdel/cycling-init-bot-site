@@ -45,12 +45,6 @@ export class CreateRiderComponent implements OnInit {
 
   get f() { return this.registerForm.controls; }
 
-  newRequest(): void {
-    this.submitted = false;
-    this.success=false;
-    this.botrequest = new BotRequest();
-  }
-
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
