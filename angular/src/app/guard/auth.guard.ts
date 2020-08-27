@@ -13,7 +13,9 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (this.authenticationService.isLoggedIn()) {
-          return true;
+            return true;
+        }else{
+            console.log("access denied");
         }
         
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});

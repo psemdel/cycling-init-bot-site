@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { catchError, mapTo, tap } from 'rxjs/operators';
-
+import { map, catchError, tap } from 'rxjs/operators';
 import { User} from '@app/models/models';
-
 import { environment } from '@env/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -50,6 +47,8 @@ export class AuthenticationService {
         //monitoring
         localStorage.removeItem('NB_STARTED_ROUTINES');
         localStorage.removeItem('NB_COMPLETED_ROUTINES');
+        localStorage.removeItem('STARTED_ROUTINES');
+        localStorage.removeItem('STARTED_ROUTINES_ID');
         //localStorage.removeItem('CHECKING');
     }
     
@@ -58,15 +57,16 @@ export class AuthenticationService {
      }
      
      isAdmin(){
+         let level=false;
+     
          if(this.isLoggedIn()){
-             this.currentUser.subscribe(
+            this.currentUser.subscribe(
              user => {
-                if (user.level){
-                 return true;
-                 }}
-             );
+               level=!!user.level;
+             })
          }
-         return false;
+        
+        return level;       
      }
    
     public getJwtToken() {

@@ -14,6 +14,8 @@ export class AuthGuardStaff implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (this.authenticationService.isAdmin()){
             return true;
+        }else{
+         console.log("access denied");
         }
 
         // not logged in so redirect to login page with the return url
