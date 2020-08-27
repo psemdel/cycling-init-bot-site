@@ -7,6 +7,7 @@ import {AuthenticationService } from '@ser/authentication.service';
 import {AlertService } from '@ser/alert.service';
 
 import {BotRequest, User} from '@app/models/models';
+import {dic_of_routines} from '@app/models/lists';
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
 
 @Injectable({
@@ -17,7 +18,6 @@ export class MonitoringService    {
   //saved as
   started_routines_id_str: string;
 
-  
   running_routine: string[];
   //saved as
   started_routines_str: string;
@@ -69,6 +69,14 @@ export class MonitoringService    {
     })
   }
   
+  reset(){
+    this.nb_started_routines=0;
+    this.nb_completed_routines=0;
+    this.running_routine=[];
+    this.running_rq=[];
+    this.save_local();
+  }
+  
   start(routine: string){
     this.get_status(routine);
     this.nb_started_routines=this.nb_started_routines+1;
@@ -115,11 +123,11 @@ export class MonitoringService    {
   }
   
   event_completed(routine: string){
-      this.alertService.success("request " + routine + " completed");
+      this.alertService.success("request " + dic_of_routines[routine] + " completed");
   }
   
   event_failed(routine: string){
-      this.alertService.error("request " + routine + " failed");
+      this.alertService.error("request " + dic_of_routines[routine] + " failed");
   }
  
   //called from topbar
@@ -148,21 +156,21 @@ export class MonitoringService    {
         let res_array=this.unique(this.running_routine);
     
         for (var routine of res_array){
-              this.botRequestService.getRq(routine,this.currentUser.id)
+             this.botRequestService.getRq(routine,this.currentUser.id)
               .subscribe(
               rqs => {
               rqs.forEach(rq=>{
                      if (this.running_rq.includes(rq.id)){ 
                          if (rq.status =="completed"){ 
                              this.remove(rq.routine,rq,true);
-                         }
+                        }
                          else if(rq.status =="failed"){ 
                              this.remove(rq.routine,rq,false);
                          }
                      }
               })
-            })
-           }
+           })
+          }
    }
    else{
          console.log("no routine to check!");

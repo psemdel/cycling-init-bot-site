@@ -23,33 +23,35 @@ export const nationalities: Nationality[] = [
     {value: 'KAZ', viewValue: 'Kazakhstan'},
     {value: 'POL', viewValue: 'Poland'},
     {value: 'ECU', viewValue: 'Ecuador'},
-    {value: 'SVK', viewValue: 'Slovakia'},
-    {value: 'CAN', viewValue: 'Canada'},
-    {value: 'POR', viewValue: 'Portugal'},
-    {value: 'RSA', viewValue: 'South-Africa'},
-    {value: 'CZE', viewValue: 'Czech Republic'},
-    {value: 'USA', viewValue: 'USA'},
-    {value: 'EST', viewValue: 'Estonia'},
-    {value: 'ERI', viewValue: 'Eritrea'},
+    {value: 'SVK', viewValue: 'Slovakia'}, //top 20
     {value: 'ALG', viewValue: 'Algeria'},
-    {value: 'NZL', viewValue: 'New-Zealand'},
-    {value: 'LAT', viewValue: 'Latvia'},
-    {value: 'TUR', viewValue: 'Turkey'},
-    {value: 'BLR', viewValue: 'Belarus'},
-    {value: 'LUX', viewValue: 'Luxembourg'},
-    {value: 'UKR', viewValue: 'Ukraine'},
-    {value: 'CRC', viewValue: 'Costa Rica'},
-    {value: 'JAP', viewValue: 'Japan'},
-    {value: 'GRE', viewValue: 'Greece'},
-    {value: 'ROM', viewValue: 'Romania'},
-    {value: 'HUN', viewValue: 'Hungary'},
-    {value: 'MOC', viewValue: 'Morocco'}, //to check
     {value: 'ARG', viewValue: 'Argentina'},
+    {value: 'BLR', viewValue: 'Belarus'},
     {value: 'BRA', viewValue: 'Brasil'},
-    {value: 'CUB', viewValue: 'Cuba'},
+    {value: 'CAN', viewValue: 'Canada'},
+    {value: 'CRC', viewValue: 'Costa Rica'},
     {value: 'CRO', viewValue: 'Croatia'},
+    {value: 'CUB', viewValue: 'Cuba'},
+    {value: 'CZE', viewValue: 'Czech Republic'},
+    {value: 'ERI', viewValue: 'Eritrea'},
+    {value: 'EST', viewValue: 'Estonia'},
+    {value: 'FIN', viewValue: 'Finland'},
+    {value: 'GRE', viewValue: 'Greece'},
+    {value: 'HUN', viewValue: 'Hungary'},
+    {value: 'JAP', viewValue: 'Japan'},
+    {value: 'LAT', viewValue: 'Latvia'},
+    {value: "LTU", viewValue: 'Lithuania'},
+    {value: 'LUX', viewValue: 'Luxembourg'},
+    {value: 'MOC', viewValue: 'Morocco'}, //to check
+    {value: 'NZL', viewValue: 'New-Zealand'},
+    {value: 'POR', viewValue: 'Portugal'},
+    {value: 'ROM', viewValue: 'Romania'},
+    {value: 'RSA', viewValue: 'South-Africa'},
+    {value: "SWE", viewValue: 'Sweden'},
+    {value: 'TUR', viewValue: 'Turkey'},
+    {value: 'UKR', viewValue: 'Ukraine'},
+    {value: 'USA', viewValue: 'USA'},
     {value: 'VEN', viewValue: 'Venezuela'},
-    {value: "LTU", viewValue: 'Lithuania'}
   ];
 
 interface Gender {
@@ -120,16 +122,15 @@ export const race_2x_classes: RaceClass[] = [
     {value: "WWT.2", viewValue: 'WWT 2'},
   ];
   
-export const list_of_routines: string[] = [
-    'create_rider',
-    'import_classification',
-    'national_all_champs',
-    'national_one_champ',
-    'start_list',
-    'race',
-    'stages',
-    'team',
-    'UCIranking',
-    'sort_date',
-    'sort_name'
-]
+export var dic_of_routines: {[id :string] :string;} = {};
+dic_of_routines['create_rider']="rider creation";
+dic_of_routines['import_classification']="import of a classification";
+dic_of_routines['national_all_champs']="creation of championships";
+dic_of_routines['national_one_champ']="creation of championships";
+dic_of_routines['start_list']="importation of start list";
+dic_of_routines['race']="race creation";
+dic_of_routines['stages']="stages creation";
+dic_of_routines['team']="team season creation";
+dic_of_routines['UCIranking']="importation of UCI ranking";
+dic_of_routines['sort_date']="sorting";
+dic_of_routines['sort_name']="sorting";

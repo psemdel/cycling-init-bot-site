@@ -43,9 +43,4 @@ export class TopbarComponent implements OnInit {
               this.ngOnInit(); //reload nb_started_routines
               })
  }
- 
-  logout() {
-     this.authenticationService.logout();
-     this.router.navigate(['/login']);
-  }
 }    
