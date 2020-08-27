@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BotRequestService} from '@ser/bot-request.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import {AuthenticationService } from '@ser/authentication.service';
-import {MonitoringService } from '@ser/monitoring.service';
 import { BotRequest, User} from '@app/models/models';
 
 @Component({
@@ -28,8 +26,7 @@ export class AllRequestListComponent implements OnInit {
   sort_name_botrequests: Observable<BotRequest[]>; 
     
    constructor(private botRequestService: BotRequestService,
-               private authenticationService: AuthenticationService,
-               private monitoringService: MonitoringService
+               private authenticationService: AuthenticationService
    ) {
    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
@@ -73,28 +70,5 @@ export class AllRequestListComponent implements OnInit {
       this.botRequestService.getAllRq('sort_name',this.currentUser.id); 
       
   }
-  
-  run(botrequest : BotRequest) {
-    this.botRequestService.runRq(botrequest)
-      .subscribe(
-        data => {
-          console.log(data);
-          botrequest.status="run requested";
-          this.monitoringService.start(botrequest.routine);
-          this.reloadData();
-        },
-        error => console.log(error));
-  }
-  
-  delete_rq(routine: string, botrequest: BotRequest){
-   this.botRequestService.deleteRq(routine,botrequest.id)
-      .subscribe(
-        data => {
-          console.log(data);
-          this.reloadData();
-        },
-        error => console.log(error));
-  }
-  
- 
+
 }
