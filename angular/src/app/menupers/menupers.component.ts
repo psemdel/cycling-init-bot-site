@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import {MonitoringService } from '@ser/monitoring.service';
 
 import { User} from '@app/models/models';
 import {AuthenticationService } from '@ser/authentication.service';
@@ -15,7 +16,8 @@ export class MenuPersComponent implements OnInit {
     
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private monitoringService: MonitoringService
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
@@ -24,6 +26,7 @@ export class MenuPersComponent implements OnInit {
   }
  
   logout() {
+     this.monitoringService.reset(); //has to be here to avoid interdependency
      this.authenticationService.logout();
      this.router.navigate(['/login']);
   }

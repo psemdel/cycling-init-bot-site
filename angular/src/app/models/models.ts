@@ -66,7 +66,7 @@ export class User {
     level: boolean;
 }
 
-export class ResetPass {
+export class SetPass {
   new_password: string;
   re_new_password: string;
   current_password: string;  

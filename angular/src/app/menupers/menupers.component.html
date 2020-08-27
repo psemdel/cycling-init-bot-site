@@ -16,7 +16,10 @@
     </button>
     <button mat-menu-item *ngIf="currentUser.level">
         <a routerLink="all_request_list" role="button" routerLinkActive="active">All requests</a>
-    </button>    
+    </button>   
+    <button mat-menu-item *ngIf="currentUser.level">
+        <a routerLink="resend_activation_email" role="button" routerLinkActive="active">Resend activation</a>
+    </button>   
     <button mat-menu-item (click)="logout()">
         Sign out<mat-icon>arrow_forward_ios</mat-icon>
     </button>

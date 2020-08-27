@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { User, ResetPass} from '@app/models/models';
+import { User, SetPass} from '@app/models/models';
 import { environment } from '@env/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -23,11 +23,17 @@ export class UserService {
         return this.http.delete(`${this.baseUrl}/${id}`);
     }
     
+    //will trigger email send
     forgotten(email: string){
         return this.http.post(`${this.authUrl}users/reset_password/`, email );
     }
     
-    changePass(resetpass: ResetPass){
-        return this.http.post(`${this.authUrl}users/set_password/`, resetpass );
+    //will trigger email send
+    resendEmail(email: string){
+        return this.http.post(`${this.authUrl}users/resend_activation/`, email );
+    }
+    
+    changePass(setpass: SetPass){
+        return this.http.post(`${this.authUrl}users/set_password/`, setpass );
     }
 }

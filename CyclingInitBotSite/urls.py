@@ -28,7 +28,8 @@ urlpatterns = [
     path('api/admin/', admin.site.urls),
     path('api/bot_requests/', include('bot_requests.urls')),
     path('api/users/', include('users.urls')),
+    path('api/email/', include('email_manager.urls')),
     path('auth/jwt/create/', CustomTokenObtainPairView.as_view(), name='custom_token_obtain_pair'),
-    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls'), name='djoser_root'),
     path('auth/', include('djoser.urls.jwt')),
 ]

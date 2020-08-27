@@ -89,6 +89,7 @@ else:
         'rest_framework.authtoken',
         'djoser',
         'bot_requests.apps.BotRequestsConfig',
+        'email_manager.apps.EmailManagerConfig',
         'users.apps.UsersConfig',
     ]  
 
@@ -139,9 +140,10 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    'SEND_ACTIVATION_EMAIL': False,
-    'ACTIVATION_URL': '/activate/{uid}/{token}',
-    'PASSWORD_RESET_CONFIRM_URL': '/password-reset/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'api/email/activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'api/email/password-reset/{uid}/{token}',
+    
     'SERIALIZERS': {
          'user_create': 'users.serializers.UserSerializer'
     }
@@ -198,7 +200,13 @@ else:
     CORS_ORIGIN_WHITELIST = (
         'https://cycling-init-bot-site.herokuapp.com',
         'http://www.cycling-init-bot.site'
-    )   
+    ) 
+    
+if DEBUG:
+    URL_ROOT= 'http://localhost:8000' 
+else:
+    URL_ROOT='https://cycling-init-bot-site.herokuapp.com'
+    
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -219,7 +227,10 @@ if DEBUG:
 else:
     CELERY_BROKER_URL =os.environ.get('CLOUDAMQP_URL')
     CELERY_BROKER_POOL_LIMIT= 1
-
+    CELERY_BROKER_HEARTBEAT = None # We're using TCP keep-alive instead
+    CELERY_BROKER_CONNECTION_TIMEOUT = 30 # May require a long timeout due to Linux DNS timeouts etc
+    CELERY_RESULT_BACKEND = None 
+    CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 #CELERY_RESULT_BACKEND = 'pyamqp://guest@localhost//'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -229,6 +240,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 #heroku config:set DJANGO_STATIC_HOST=https://d4663kmspf1sqa.cloudfront.net
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 DJANGO_STATIC_HOST=''
 STATIC_URL = DJANGO_STATIC_HOST + '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')

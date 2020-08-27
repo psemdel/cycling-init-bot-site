@@ -6,7 +6,7 @@ import { first, catchError  } from 'rxjs/operators';
 
 import { AuthenticationService } from '@ser/authentication.service';
 import { UserService} from '@ser/user.service';
-import { ResetPass} from '@app/models/models';
+import { SetPass} from '@app/models/models';
 
 @Component({ templateUrl: 'user-settings.component.html' })
 
@@ -17,7 +17,7 @@ export class UserSettingsComponent implements OnInit {
     success = false;
     useralready=false;
     unknownerror=false;
-    resetpass:ResetPass;
+    setpass:SetPass;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -27,7 +27,7 @@ export class UserSettingsComponent implements OnInit {
     ) {}
     
     ngOnInit() {
-        this.resetpass = new ResetPass();
+        this.setpass = new SetPass();
         this.settingsForm = this.formBuilder.group({
             old_password: ['', [Validators.required]],
             password: ['', [Validators.required]],
@@ -54,11 +54,11 @@ export class UserSettingsComponent implements OnInit {
         this.loading = true;
         this.unknownerror=false;
         
-        this.resetpass.new_password=this.settingsForm.controls['password'].value;
-        this.resetpass.re_new_password=this.settingsForm.controls['confirmPass'].value;
-        this.resetpass.current_password=this.settingsForm.controls['old_password'].value;
+        this.setpass.new_password=this.settingsForm.controls['password'].value;
+        this.setpass.re_new_password=this.settingsForm.controls['confirmPass'].value;
+        this.setpass.current_password=this.settingsForm.controls['old_password'].value;
         
-        this.userService.changePass(this.resetpass)
+        this.userService.changePass(this.setpass)
             .pipe(
             first(),
            // catchError(this.handleerror)              
