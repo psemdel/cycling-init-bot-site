@@ -234,10 +234,10 @@ def run_bot(rq_id, rq_routine):
     except Exception as msg:
         table=routine_to_model(rq_routine)
         rq=table.objects.get(pk=rq_id)
-        save_log(rq_id, rq_routine, "request failed, most probably max lag of wikidata" )
+        save_log(rq_id, rq_routine, "request failed, most probably max lag of wikidata, retry in 10 minutes" )
         rq.status = "failed"
         rq.save() 
-        return 10    
+        return 11   
     except:
         table=routine_to_model(rq_routine)
         rq=table.objects.get(pk=rq_id)
@@ -245,5 +245,5 @@ def run_bot(rq_id, rq_routine):
 
         rq.status = "failed"
         rq.save() 
-        return 11
+        return 10
     

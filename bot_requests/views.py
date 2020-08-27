@@ -16,6 +16,7 @@ from rest_framework import generics
 from ratelimit.decorators import ratelimit
 import json
 from celery import shared_task
+import time
 
 #app
 from .serializers import *
@@ -42,7 +43,6 @@ def serial_save(request_serializer, request, rq_data):
     if request_serializer.is_valid():
         rq=request_serializer.save()
         return run_autocheck(rq_data, request, rq.id)
-       # return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
     else:
         print('serializer error: ')
         print(request_serializer.errors)
@@ -91,12 +91,21 @@ def create_file_rq(request,routine):
 
 @shared_task
 def async_run_bot(rq_id, rq_routine):
-    run_bot(rq_id, rq_routine)
+    res=11
+    
+    while res==11:
+        res=run_bot(rq_id, rq_routine)
+        if res==11:
+            time.sleep(600) #wait 10 minutes before retrying
 
 def run_autocheck(rq_data, request, rq_id):
-    print("run autocheck")
+    print("check if autocheck")
     user=User.objects.get(pk=rq_data["author"])
-    if user.has_perm('bot_requests.can_run_requests'):
+    no_autocheck_run_routines=["national_all_champs","national_one_champ","UCIranking"] #to have a double check
+    
+    if (user.has_perm('bot_requests.can_run_requests') and 
+    rq_data["routine"] and rq_data["routine"] not in  no_autocheck_run_routines):
+        print("run autocheck")
         async_run_bot.delay(rq_id,rq_data["routine"])
         #not required
         #if run_error==0:
@@ -127,10 +136,6 @@ def run(request):
                     return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
                 else:
                     return JsonResponse({'error':'no POST request'}, status=status.HTTP_400_BAD_REQUEST)   
-                # if run_error==0:
-                #    return JsonResponse({'ras':'ras'}, status=status.HTTP_200_OK) 
-               # else:
-               #     return JsonResponse({'error':'bot run not successful'}, status=status.HTTP_417_EXPECTATION_FAILED)  
             else:
                 return JsonResponse({'error':'not authorized'}, status=status.HTTP_401_UNAUTHORIZED)  
         else:

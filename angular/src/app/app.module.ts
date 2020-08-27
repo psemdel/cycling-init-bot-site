@@ -46,8 +46,10 @@ import {UserSettingsComponent} from '@app/user-settings/user-settings.component'
 import {LogComponent} from '@app/log/log.component';
 import {LogContentComponent} from '@app/logcontent/logcontent.component';
 import {AlertComponent} from '@app/alert/alert.component';
+import {RequestDetailsComponent } from '@app/request-details/request-details.component';
+import {ResendActivationEmailComponent} from '@app/resend-activation-email/resend-activation-email.component';
 
-import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 import {JwtInterceptor} from './guard/jwt.interceptor';
 import {ErrorInterceptor} from './guard/error.interceptor';
@@ -78,11 +80,12 @@ import {LoadingInterceptorService } from './guard/loading.interceptor';
                 RequestListComponent, AllRequestListComponent,
                 LoginComponent, RegisterComponent, ImportClassificationComponent,
                 NationalOneChampComponent, NationalAllChampsComponent,
-                ConfirmEmailComponent,  StartListComponent, RaceComponent,
+                StartListComponent, RaceComponent, ResendActivationEmailComponent,
                 StagesComponent, TeamComponent, UCIrankingComponent,
                 SortDateComponent, SortNameComponent, LoadingComponent,
                 ForgottenPassComponent, UserSettingsComponent, 
-                LogComponent, LogContentComponent, AlertComponent, MenuComponent
+                LogComponent, LogContentComponent, AlertComponent, MenuComponent,
+                RequestDetailsComponent, NotFoundComponent 
                 ],
   bootstrap:    [ AppComponent ],
   providers: [
