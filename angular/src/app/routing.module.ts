@@ -20,17 +20,17 @@ import { UCIrankingComponent} from '@app/UCIranking/UCIranking.component';
 import { SortDateComponent} from '@app/sort-date/sort-date.component';
 import { SortNameComponent} from '@app/sort-name/sort-name.component';
 import {ForgottenPassComponent} from '@app/forgotten-pass/forgotten-pass.component';
-import { ConfirmEmailComponent } from 'app/confirm-email/confirm-email.component';
 import {UserSettingsComponent} from '@app/user-settings/user-settings.component';
+import { NotFoundComponent } from '@app/not-found/not-found.component';
+import {ResendActivationEmailComponent} from '@app/resend-activation-email/resend-activation-email.component';
+
 
 import {AuthGuard} from './guard/auth.guard';
 import {AuthGuardStaff} from './guard/authstaff.guard';
 
 export const routes: Routes = [
-    { path: 'activate/:uid/:token', component: ConfirmEmailComponent },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent},
-
     { path: 'national-all-champs', component: NationalAllChampsComponent, canActivate: [AuthGuard] },
     { path: 'national-one-champ', component: NationalOneChampComponent, canActivate: [AuthGuard] },
     { path: 'create_rider', component: CreateRiderComponent, canActivate: [AuthGuard] },
@@ -41,19 +41,15 @@ export const routes: Routes = [
     { path: 'UCIranking', component: UCIrankingComponent, canActivate: [AuthGuard] },
     { path: 'sort_date', component: SortDateComponent, canActivate: [AuthGuard] },
     { path: 'sort_name', component: SortNameComponent, canActivate: [AuthGuard] },
-         
     { path: 'import_classification', component: ImportClassificationComponent, canActivate: [AuthGuardStaff] },
     { path: 'request_list', component: RequestListComponent, canActivate: [AuthGuard] },
-    { path: 'all_request_list', component: AllRequestListComponent, canActivate: [AuthGuard] },
+    { path: 'all_request_list', component: AllRequestListComponent, canActivate: [AuthGuardStaff] },
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
     { path: 'forgotten', component:     ForgottenPassComponent },
     { path: 'user_settings', component:     UserSettingsComponent },
-  
-
-   // { path: 'activate', component: ConfirmEmailComponent },
-    // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    { path: 'resend_activation_email', component: ResendActivationEmailComponent, canActivate: [AuthGuardStaff] },
+    { path: '**',component:  NotFoundComponent},
 ];
 
 @NgModule({
