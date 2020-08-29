@@ -33,6 +33,9 @@ def list_of_rider_exception():
     exception_table[kk][0] = u'jolien d`hoore'
     exception_table[kk][1] = u'Q440790'
     kk += 1
+    exception_table[kk][0] = u'jolien dhoore'
+    exception_table[kk][1] = u'Q440790'
+    kk += 1
     exception_table[kk][0] = u'Claire Moore'
     exception_table[kk][1] = u'Q63040077'
     kk += 1
@@ -59,6 +62,7 @@ def list_of_rider_exception():
     kk += 1
     exception_table[kk][0] = u'Sandra Gómez'
     exception_table[kk][1] = u'Q23785379'
+    kk += 1
     
     final_table = [['' for x in range(2)] for y in range(kk)]
     final_table=exception_table[:kk]
@@ -81,13 +85,14 @@ def list_of_team_name_exception():
     kk += 1
     exception_table[kk][0] = u'MITCHELTON SCOTT'
     exception_table[kk][1] = u'Q43144477'
+    kk += 1
     
     final_table = [['' for x in range(2)] for y in range(kk)]
     final_table=exception_table[:kk]
-            
+         
     return  final_table
 
-
+#woman
 def list_of_team_code_exception():
     exception_table = [['' for x in range(2)] for y in range(100)]
     kk = 0
@@ -112,10 +117,44 @@ def list_of_team_code_exception():
     kk += 1
     exception_table[kk][0] = u'MCC 2019'
     exception_table[kk][1] = u'Q61451340'
-
+    kk += 1
+    exception_table[kk][0] = u'MTS 2020'
+    exception_table[kk][1] = u'Q74725715'    
+    kk += 1
+    exception_table[kk][0] = u'TFS 2020'
+    exception_table[kk][1] = u'Q82315001'   
+    kk += 1
+    exception_table[kk][0] = u'SUN 2020'
+    exception_table[kk][1] = u'Q74726068'   
+    kk += 1
+    exception_table[kk][0] = u'CCC 2020'
+    exception_table[kk][1] = u'Q74726282'   
+    kk += 1  
+    
+    
     final_table = [['' for x in range(2)] for y in range(kk)]
     final_table=exception_table[:kk]
             
     return  final_table
 
+def list_of_team_code_exception_man():
+    exception_table = [['' for x in range(2)] for y in range(100)]
+    kk = 0
 
+    exception_table[kk][0] = u'MTS 2020'
+    exception_table[kk][1] = u'Q78075331'    
+    kk += 1
+    exception_table[kk][0] = u'TFS 2020'
+    exception_table[kk][1] = u'Q78075353'      
+    kk += 1
+    exception_table[kk][0] = u'SUN 2020'
+    exception_table[kk][1] = u'Q78075349'   
+    kk += 1
+    exception_table[kk][0] = u'CCC 2020'
+    exception_table[kk][1] = u'Q78075307'   
+    kk += 1
+    
+    final_table = [['' for x in range(2)] for y in range(kk)]
+    final_table=exception_table[:kk]
+            
+    return  final_table

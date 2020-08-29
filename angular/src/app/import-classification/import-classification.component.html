@@ -28,6 +28,33 @@
                     </div>
                 </div>
             <br>
+                <div *ngIf="(f.classification_type.value==='5'||f.classification_type.value==='6')" class="form-group"> 
+                      <label for="year">
+                          Year of the race
+                      </label>
+                      <select class="form-control" id="year" formControlName="year"
+                       [ngClass]="{ 'is-invalid': submitted && f.year.errors }">
+                          <option *ngFor="let year of years" [value]="year">
+                                        {{year}}
+                          </option>
+                      </select>
+                      
+                     <br/>
+                     <div class="form-group">
+                          <label for="gender">Man or woman race?<br/>
+                          </label>
+                          <select class="form-control" formControlName="gender"
+                          [ngClass]="{ 'is-invalid': submitted && f.gender.errors }">
+                              <option *ngFor="let gender of genders" [value]="gender.value">
+                                {{gender.viewValue}}
+                              </option>
+                            </select>
+                            <div *ngIf="submitted && f.gender.errors" class="invalid-feedback">
+                                <div *ngIf="f.gender.errors.required">Field required</div>
+                           </div>
+                     </div>
+                </div>
+             <br>   
 
            <label>Excel or csv file from UCI web site</label>
            <input type="file" id="fileUpload" name="fileUpload" formControlName="file"  multiple="multiple" 

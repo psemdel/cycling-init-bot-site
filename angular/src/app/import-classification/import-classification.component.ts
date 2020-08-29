@@ -13,6 +13,7 @@ import {AuthenticationService } from '@ser/authentication.service';
 import {MonitoringService } from '@ser/monitoring.service';
 
 import { BotRequest, User, FileUploadModel} from '@app/models/models';
+import { genders} from '@app/models/lists';
 
 import { environment } from '@env/environment';
 
@@ -41,11 +42,13 @@ export class ImportClassificationComponent implements OnInit {
   submitted = false;
   success = false;
   lastname: string;
+  years:Array<any> = [];
+  genders=genders;
   
   botrequest: BotRequest = new BotRequest();
   files: Array<FileUploadModel> = [];
   private baseUrl = environment.apiUrl +'bot_requests';
-  
+
   exterror=false;
   sizeerror=false;
  
@@ -67,6 +70,7 @@ export class ImportClassificationComponent implements OnInit {
               private monitoringService: MonitoringService
   ) { 
               this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+              this.years = Array(30).fill(0).map((x,i)=>2000+i);
    }
    
   ngOnInit() {
@@ -74,7 +78,9 @@ export class ImportClassificationComponent implements OnInit {
         this.registerForm = this.formBuilder.group({
             item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
             classification_type: [0, Validators.required],
-            file: [null, Validators.required]
+            file: [null, Validators.required],
+            year: [2020],
+            gender: ['woman'],
             });
   }
   
@@ -107,7 +113,6 @@ export class ImportClassificationComponent implements OnInit {
         return;
      }
      
-     console.log(fileUpload.files[0].size)
      if (fileUpload.files[0].size>2000000) { //2 mb
         console.log('File size exceeded');
         this.sizeerror=true;

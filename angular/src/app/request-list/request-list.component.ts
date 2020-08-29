@@ -27,6 +27,7 @@ export class RequestListComponent implements OnInit {
   sort_date_botrequests: Observable<BotRequest[]>;
   sort_name_botrequests: Observable<BotRequest[]>; 
   all_botrequests: Observable<BotRequest[]>; 
+  total_length:number;
  
    constructor(private botRequestService: BotRequestService,
                private authenticationService: AuthenticationService,
@@ -90,6 +91,11 @@ export class RequestListComponent implements OnInit {
          this.sort_date_botrequests,
          this.sort_name_botrequests,
          );
+        
+    this.total_length=0;    
+    this.all_botrequests.subscribe(
+      result => { this.total_length+= result.length;
+      })
   }
 
   delete_rq(routine: string, botrequest: BotRequest){

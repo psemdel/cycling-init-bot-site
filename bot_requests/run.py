@@ -51,9 +51,12 @@ def run_bot(rq_id, rq_routine):
              maxkk=10
              startliston=True
              file=rq.result_file_name
+             year=rq.year
+             
              if not test_site:
                  status, log=classification_importer.f(pywikibot,site,repo,stage_or_general,id_race,final,
-                                   maxkk,test,startliston=startliston,file=file)
+                                   maxkk,test,startliston=startliston,file=file, year=year,
+                                   man_or_woman=rq.gender)
              return 0
         elif rq_routine=="race":
             from bot_requests.src import race_creator

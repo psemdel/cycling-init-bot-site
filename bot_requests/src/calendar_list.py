@@ -68,7 +68,7 @@ def calendarWWTID(year):
     else:
         return "Q0"
 
-#women
+#men
 def calendarUWTID(year): 
     calendar_dic={
         "2011":"Q849092",
