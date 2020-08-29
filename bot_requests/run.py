@@ -173,10 +173,11 @@ def run_bot(rq_id, rq_routine):
             time_of_race=rq.time_of_race
             man_or_woman=rq.gender
             file=rq.result_file_name
+            force_nation_team=False
             
             if not test_site:
                 status, log=startlist_importer.f(pywikibot,site,repo, prologue_or_final, id_race, 
-                                   time_of_race,chrono,test,nation_table,man_or_woman,file=file) 
+                                   time_of_race,chrono,test,nation_table,man_or_woman,force_nation_team,file=file) 
             
         elif rq_routine=="national_all_champs":
             from bot_requests.src import national_championship_creator
