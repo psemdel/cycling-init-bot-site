@@ -7,7 +7,7 @@ Created on Thu Apr 23 18:03:01 2020
 """
 import pywikibot #avoid confusion
 from bot_requests.src import nation_team_table
-import time
+import time, os
 
 from .dic import routine_to_model
 from .log import save_log
@@ -22,6 +22,11 @@ def load_request(rq_id, routine):
     rq.status = "started"
     rq.save()
     return rq 
+
+def kill_file(rq):
+    filepath='uploads/'+rq.result_file_name
+    os.remove(filepath)
+    print("file removed")
 
 def run_bot(rq_id, rq_routine):
     #code 10: already there
@@ -221,11 +226,14 @@ def run_bot(rq_id, rq_routine):
         table=routine_to_model(rq_routine)
         rq=table.objects.get(pk=rq_id)
       #  print(rq.log)
+        routine_with_file=["import_classification","start_list","UCIranking"]
         
         if status==0:
             save_log(rq_id, rq_routine, "request completed")
             rq.status = "completed"
             rq.save() 
+            if rq.routine in routine_with_file:
+                kill_file(rq)
             return 0
         else:
             save_log(rq_id, rq_routine, "request failed")

@@ -34,8 +34,8 @@ export class StagesComponent implements OnInit {
         this.lastname="";
         this.registerForm = this.formBuilder.group({
             item_id: ['', [Validators.required, Validators.pattern(/^[Q].*$/)]],
-            prologue: [true],
-            last_stage: [''],
+            prologue: [true, Validators.required],
+            last_stage: [0, Validators.required],
             });
   }
 

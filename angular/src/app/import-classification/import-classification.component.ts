@@ -82,7 +82,25 @@ export class ImportClassificationComponent implements OnInit {
             year: [2020],
             gender: ['woman'],
             });
+        
+        this.registerForm.get('classification_type').valueChanges
+            .subscribe(value => this.onClassificationTypeChanged());         
+            
   }
+  
+  onClassificationTypeChanged()
+  {
+      if (this.registerForm.value.classification_type==5 || 
+          this.registerForm.value.classification_type==6){ //team
+          this.registerForm.controls.year.setValidators(Validators.required);
+          this.registerForm.controls.gender.setValidators(Validators.required);
+      }
+      else
+      {   
+          this.registerForm.controls.year.setValidators(null);
+          this.registerForm.controls.gender.setValidators(null);
+      }
+ }
   
   get f() { return this.registerForm.controls; }
 

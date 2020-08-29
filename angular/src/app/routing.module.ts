@@ -31,7 +31,7 @@ import {AuthGuardStaff} from './guard/authstaff.guard';
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent},
-    { path: 'national-all-champs', component: NationalAllChampsComponent, canActivate: [AuthGuard] },
+    { path: 'national-all-champs', component: NationalAllChampsComponent, canActivate: [AuthGuardStaff] },
     { path: 'national-one-champ', component: NationalOneChampComponent, canActivate: [AuthGuard] },
     { path: 'create_rider', component: CreateRiderComponent, canActivate: [AuthGuard] },
     { path: 'race', component: RaceComponent, canActivate: [AuthGuard] },

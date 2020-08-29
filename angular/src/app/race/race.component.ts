@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BotRequestService} from '@ser/bot-request.service';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 
 import {AuthenticationService } from '@ser/authentication.service';
 import {MonitoringService } from '@ser/monitoring.service';
@@ -19,7 +19,6 @@ import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
   {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
   ],
 })
-
 export class RaceComponent implements OnInit {
   currentUser: User;
   registerForm: FormGroup;
@@ -51,7 +50,7 @@ export class RaceComponent implements OnInit {
             nationality: ['', Validators.required],
             time_of_race: ['', Validators.required],
             end_of_race: [''],
-            race_type: ['true', Validators.required], //should be true, but there is an issue
+            race_type: [true, Validators.required],
             race_class1: ['',],
             race_class2: [''],
             edition_nr: [''],
@@ -63,18 +62,35 @@ export class RaceComponent implements OnInit {
             
         this.registerForm.get('race_type').valueChanges
             .subscribe(value => this.onRaceTypeChanged());    
+            
+        this.registerForm.get('create_stages').valueChanges
+            .subscribe(value => this.onCreateStageChanged());        
+            
   }
   
   onRaceTypeChanged()
   {
-      if (this.registerForm.value.race_type=='true'){
+      if (this.registerForm.value.race_type){ //stage
           this.registerForm.controls.race_class2.setValidators(Validators.required);
           this.registerForm.controls.race_class1.setValidators(null);
+          this.registerForm.controls.end_of_race.setValidators(Validators.required);
       }
       else
       {   
           this.registerForm.controls.race_class1.setValidators(Validators.required);
           this.registerForm.controls.race_class2.setValidators(null);
+          this.registerForm.controls.end_of_race.setValidators(null);
+      }
+  }
+ 
+  onCreateStageChanged()
+  {
+      if (this.registerForm.value.create_stages){ //stage
+          this.registerForm.controls.last_stage.setValidators(Validators.required);
+      }
+      else
+      {   
+          this.registerForm.controls.last_stage.setValidators(null);
       }
  }
 
@@ -91,9 +107,6 @@ export class RaceComponent implements OnInit {
     // stop here if form is invalid
     if (this.registerForm.invalid) {
         console.log("input not valid")
-        error => {
-                console.log(error);
-        }
        return;
     }
     //display in the interface
