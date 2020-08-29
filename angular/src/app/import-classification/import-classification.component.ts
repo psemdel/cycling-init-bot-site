@@ -107,7 +107,8 @@ export class ImportClassificationComponent implements OnInit {
         return;
      }
      
-     if (fileUpload.files[0].size>20000) {
+     console.log(fileUpload.files[0].size)
+     if (fileUpload.files[0].size>2000000) { //2 mb
         console.log('File size exceeded');
         this.sizeerror=true;
         return;

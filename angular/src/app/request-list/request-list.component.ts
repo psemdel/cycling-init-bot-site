@@ -105,6 +105,7 @@ export class RequestListComponent implements OnInit {
              this.delete_rq(rq.routine, rq);
          })
     })
+    this.reloadData()
   }
   
   

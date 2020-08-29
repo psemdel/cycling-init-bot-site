@@ -46,11 +46,10 @@ def run_bot(rq_id, rq_routine):
         elif rq_routine=="import_classification":
              from bot_requests.src import classification_importer
              id_race=rq.item_id
-             stage_or_general=rq.classificationtype
+             stage_or_general=rq.classification_type
              final=False
              maxkk=10
              startliston=True
-             
              file=rq.result_file_name
              if not test_site:
                  status, log=classification_importer.f(pywikibot,site,repo,stage_or_general,id_race,final,

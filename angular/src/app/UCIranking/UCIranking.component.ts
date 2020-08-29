@@ -91,7 +91,7 @@ export class UCIrankingComponent implements OnInit {
         return;
      }
      
-     if (fileUpload.files[0].size>20000) {
+     if (fileUpload.files[0].size>20000000) { //20 Mb
         console.log('File size exceeded');
         this.sizeerror=true;
         return;

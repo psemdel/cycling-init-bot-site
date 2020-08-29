@@ -117,7 +117,7 @@ export class StartListComponent implements OnInit {
         return;
      }
      
-     if (fileUpload.files[0].size>20000) {
+     if (fileUpload.files[0].size>2000000) {
         console.log('File size exceeded');
         this.sizeerror=true;
         return;
