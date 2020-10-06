@@ -110,8 +110,8 @@ export class RequestListComponent implements OnInit {
          rqs.forEach( rq => {
              this.delete_rq(rq.routine, rq);
          })
+         this.reloadData()
     })
-    this.reloadData()
   }
   
   

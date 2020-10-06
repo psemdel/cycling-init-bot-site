@@ -27,20 +27,25 @@ export class TopbarComponent implements OnInit {
     }
 
   ngOnInit() {
-      this.nb_started_routines=this.monitoringService.nb_started_routines;
-      this.nb_completed_routines=this.monitoringService.nb_completed_routines;
-      if (!this.periodic_bool){
-          this.periodic_update();
-      } //otherwise it starts infinitely
+    this.init()
   }
  
  periodic_update(){
      this.periodic_bool=true;
      this.monitoringService.periodic_check();
-     IntervalObservable.create(10000)
+     IntervalObservable.create(20000)
           .subscribe(
               data => {
-              this.ngOnInit(); //reload nb_started_routines
+              this.init(); //reload nb_started_routines
               })
+ }
+ 
+ init(){
+      this.nb_started_routines=this.monitoringService.nb_started_routines;
+      this.nb_completed_routines=this.monitoringService.nb_completed_routines;
+      if (!this.periodic_bool){
+          this.periodic_update();
+      } //otherwise it starts infinitely
+ 
  }
 }    

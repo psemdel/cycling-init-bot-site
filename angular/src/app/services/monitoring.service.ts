@@ -135,7 +135,7 @@ export class MonitoringService    {
       this.checking$.subscribe(
       (checking: boolean) => {
               if (checking){
-                 this.periodic=IntervalObservable.create(5000)
+                 this.periodic=IntervalObservable.create(30000) //30 s
                       .subscribe(
                           data => {
                           this.check();
@@ -152,7 +152,7 @@ export class MonitoringService    {
   
   check() {
     if (this.running_routine){
-        console.log("checking data");
+        //console.log("checking data");
         let res_array=this.unique(this.running_routine);
     
         for (var routine of res_array){
