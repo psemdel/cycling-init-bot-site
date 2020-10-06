@@ -1,4 +1,4 @@
-import { TestBed, inject, fakeAsync, flush, async, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import {AlertService} from '@ser/alert.service';
 import { Observable, Subject } from 'rxjs';
 import {RouterTestingModule} from "@angular/router/testing";
@@ -16,8 +16,6 @@ describe('Alert service', () => {
         providers: [AlertService]
         });
         service = TestBed.get(AlertService)
-       // router = TestBed.get(Router);
-       // service = new AlertService(router);
         
       });
     
@@ -41,7 +39,7 @@ describe('Alert service', () => {
             expect(data.type).toEqual('success');
             expect(data.text).toEqual('work');
         });
-        
+        flush();
     }));
     
     it('test error',  (done) =>{
@@ -83,7 +81,7 @@ describe('Alert service', () => {
         data=> {
             expect(data).toEqual(undefined);
         });
-        
+        flush();
        })
     );   
     

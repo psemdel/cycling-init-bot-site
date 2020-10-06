@@ -1,4 +1,4 @@
-import { TestBed, inject, fakeAsync, flush, async } from '@angular/core/testing';
+import { TestBed, inject, fakeAsync, flush } from '@angular/core/testing';
 import {BotRequestService} from '@ser/bot-request.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@env/environment';
