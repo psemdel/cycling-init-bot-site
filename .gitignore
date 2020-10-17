@@ -4,5 +4,6 @@
 **/staticfiles/
 **/dist
 **/node_modules
+**/uploads
 user-password.py
 

@@ -6,7 +6,7 @@ Created on Thu Apr 23 18:03:01 2020
 @author: maxime
 """
 import pywikibot #avoid confusion
-from bot_requests.src import nation_team_table
+from bot_src.src import nation_team_table
 import time, os
 
 from .dic import routine_to_model
@@ -40,7 +40,7 @@ def run_bot(rq_id, rq_routine):
         test_site=False #don't run the functions
         
         if rq_routine=="create_rider":
-            from bot_requests.src import rider_fast_init
+            from bot_src.src import rider_fast_init
 
             if not test_site:
                 status, log, result_id=rider_fast_init.f(pywikibot,site,repo,time,nation_table, rq.name,rq.nationality,
@@ -49,7 +49,7 @@ def run_bot(rq_id, rq_routine):
                 rq.save()
         
         elif rq_routine=="import_classification":
-             from bot_requests.src import classification_importer
+             from bot_src.src import classification_importer
              id_race=rq.item_id
              stage_or_general=rq.classification_type
              final=False
@@ -64,7 +64,7 @@ def run_bot(rq_id, rq_routine):
                                    man_or_woman=rq.gender)
              return 0
         elif rq_routine=="race":
-            from bot_requests.src import race_creator
+            from bot_src.src import race_creator
             
             if rq.race_type: #stage race
                 single_race=False
@@ -107,7 +107,7 @@ def run_bot(rq_id, rq_routine):
             rq.save()
                     
         elif rq_routine=="stages":
-            from bot_requests.src import race_creator
+            from bot_src.src import race_creator
 
             single_race=False
             if rq.prologue:
@@ -126,8 +126,10 @@ def run_bot(rq_id, rq_routine):
                                   last_stage=rq.last_stage)
 
         elif rq_routine=="team":
-            from bot_requests.src import team_creator
-            from bot_requests.src import pro_team_table
+            from bot_src.src import team_creator
+            from bot_src.src import pro_team_table
+            
+            print("team")
             
             team_table = [[0 for x in range(7)] for y in range(2)]
             team_table[1][1] = rq.name
@@ -138,6 +140,8 @@ def run_bot(rq_id, rq_routine):
             team_table[1][6] = 1 
             [_, team_dic]=pro_team_table.load()
             
+            print("loaded")
+            
             if not test_site:
                 status, log, result_id=team_creator.f(pywikibot,site,repo,time,team_table,nation_table,
                                    team_dic,rq.year)
@@ -145,19 +149,19 @@ def run_bot(rq_id, rq_routine):
                 rq.save()
                 
         elif rq_routine=="sort_date":
-            from bot_requests.src import sorter
+            from bot_src.src import sorter
             
             if not test_site:
                 status, log=sorter.date_sorter(pywikibot,site,repo,time,rq.item_id,rq.prop,test )
 
         elif rq_routine=="sort_name":
-            from bot_requests.src import sorter
+            from bot_src.src import sorter
             
             if not test_site:
                 status, log=sorter.name_sorter( pywikibot,site,repo,time,rq.item_id, rq.prop, test)
             
         elif rq_routine=="UCIranking":
-            from bot_requests.src import uci_classification
+            from bot_src.src import uci_classification
             
             id_master_UCI=rq.item_id
             year=rq.year
@@ -167,7 +171,7 @@ def run_bot(rq_id, rq_routine):
                 status, log=uci_classification.f(pywikibot,site,repo,year,id_master_UCI, filename,cleaner,test)
             
         elif rq_routine=="start_list":
-            from bot_requests.src import startlist_importer
+            from bot_src.src import startlist_importer
             
             id_race=rq.item_id
             if rq.race_type: #stage race
@@ -188,8 +192,8 @@ def run_bot(rq_id, rq_routine):
                                    time_of_race,chrono,test,nation_table,man_or_woman,force_nation_team,file=file) 
             
         elif rq_routine=="national_all_champs":
-            from bot_requests.src import national_championship_creator
-            from bot_requests.src import cc_table
+            from bot_src.src import national_championship_creator
+            from bot_src.src import cc_table
             
             man_or_woman=u'both' 
             option=u'clmon' #'clmoff'
@@ -208,7 +212,7 @@ def run_bot(rq_id, rq_routine):
 
             
         elif rq_routine=="national_one_champ":
-            from bot_requests.src import national_championship_creator
+            from bot_src.src import national_championship_creator
             
             man_or_woman=rq.category
             option=u'clmon' #'clmoff'

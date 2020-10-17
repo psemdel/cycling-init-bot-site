@@ -92,7 +92,7 @@ def create_file_rq(request,routine):
 @shared_task
 def async_run_bot(rq_id, rq_routine):
     res=11
-    max_iter=10
+    max_iter=1
     kk=0
     
     while res==11 and kk<max_iter:

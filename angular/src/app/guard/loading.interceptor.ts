@@ -20,7 +20,6 @@ export class LoadingInterceptorService {
         if (this.activeRequests === 0) {
             this.loadingScreenService.startLoading();
         }
-
         this.activeRequests++;
 
         return next.handle(request).pipe(

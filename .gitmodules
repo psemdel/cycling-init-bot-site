@@ -1,0 +1,3 @@
+[submodule "botsrc"]
+	path = botsrc
+	url = https://github.com/psemdel/CyclingInitBot.git
