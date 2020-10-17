@@ -18,5 +18,5 @@ before_script:
   - npm update 
 
 script:
-  - ng test -watch false -browsers ChromeHeadless
+  - ng test --watch=false --browsers=ChromeHeadless
 
